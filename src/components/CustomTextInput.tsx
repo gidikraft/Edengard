@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
   ViewStyle,
   View,
-  Text,
+  // Text,
 } from "react-native";
 // import DateTimePickerModal from "react-native-modal-datetime-picker";
 // import { Entypo } from "@expo/vector-icons";
@@ -19,6 +19,7 @@ import {
 // import { theme } from "theme";
 // import { ThemeContext } from "context";
 import { Controller, Control } from "react-hook-form";
+import Text from "./Text";
 // import { Box } from "components/layout";
 // import LockIcon from "svgs/profile/lock_icon.svg";
 
@@ -129,13 +130,17 @@ const CustomTextInput = ({
                 alignItems: "center",
                 justifyContent: "space-between",
               }}>
-              {/* {label && <InputLabel label={label} labelStyle={labelStyle} />} */}
+              {label &&
+                <Text variant="medium12" color='textColor'>
+                  {label}
+                </Text>
+              }
               {rightLabel && (
                 <TouchableOpacity
                   activeOpacity={0.5}
                   hitSlop={labelHitSlop}
                   onPress={onRightLabelPress}>
-                  <Text style={{ ...styles(editable).rightLabel }}>
+                  <Text variant="medium12" color='blue'>
                     {rightLabel}
                   </Text>
                 </TouchableOpacity>
@@ -244,11 +249,6 @@ const styles = (editable: boolean) => {
       height: 45,
       borderRadius: 8,
       marginTop: 8,
-    },
-    rightLabel: {
-      color: "blue",
-      fontSize: 12.5,
-      fontFamily: "Inter-Medium",
     },
   });
 };

@@ -1,2 +1,12 @@
 export {default as PrimaryButton} from './Button';
 export {default as PrimaryInput} from './CustomTextInput';
+export type { TextProps } from "./Text";
+export { default as Text } from "./Text";
+export type { BoxProps } from "./Box";
+export { default as Box } from "./Box";
+export type { IconName, IconProps } from "./Icons";
+export { default as Icon } from "./Icons";
+export type { PressableProps } from "./Pressable";
+export { default as Pressable } from "./Pressable";
+export type { ButtonProps } from "./ThemedButton";
+export { default as Button } from "./ThemedButton";

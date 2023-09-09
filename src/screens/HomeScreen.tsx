@@ -1,7 +1,11 @@
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView, StyleSheet, } from 'react-native';
 import React from 'react';
-import { PrimaryButton, PrimaryInput } from '../components';
 import { useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+import { login, logout } from '../store/authSlice';
+import { RootState } from '@/store/Store';
+import { Box, Button, Icon, Pressable, PrimaryButton, PrimaryInput, Text } from '@/components/';
+// import { RootState } from '../store/Store';
 
 const HomeScreen = () => {
 
@@ -25,6 +29,18 @@ const HomeScreen = () => {
     },
   });
 
+  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated)
+
+  const buttonPress = () => {
+    console.log('first', getValues(), isAuthenticated)
+  }
+
+  const loginAction = () => {
+    dispatch(logout());
+  }
+
+  const dispatch = useDispatch();
+
   return (
     <SafeAreaView
       style={{
@@ -32,22 +48,30 @@ const HomeScreen = () => {
         backgroundColor: '#FFF',
       }}
     >
-      <View style={{ flex: 0.9, paddingHorizontal: 16 }} >
-        <Text>HomeScreen</Text>
+      <Box paddingHorizontal='md'>
+
         <PrimaryInput
           placeholder='Enter your name'
           control={control}
           name="childFirstName"
+          label='Name'
           errorMessage={errors.childFirstName?.message}
         />
-      </View>
-      <View style={{ flex: 0.1, paddingHorizontal: 16 }} >
         <PrimaryButton
           label='Go to next'
-          onPress={() => console.log('first')}
+          onPress={loginAction}
         />
+        <Pressable onPress={buttonPress} type='scale'>
+          <Icon name='address_book' />
+        </Pressable>
 
-      </View>
+        <Button
+          label='Go to tabs'
+          onPress={buttonPress}
+          backgroundColor="buttonGreen"
+          variant='secondary'
+        />
+      </Box>
     </SafeAreaView>
   )
 };
