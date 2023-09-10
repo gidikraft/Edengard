@@ -25,7 +25,7 @@ export type ButtonProps = PressableProps & {
   isloading?: boolean;
   label: string;
   labelProps?: TextProps;
-  variant?: "primary" | "secondary" | "textColor";
+  variant?: "primary" | "secondary" | "textColor" | "white";
 };
 
 /**

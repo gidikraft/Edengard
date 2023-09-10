@@ -1,6 +1,6 @@
 import { isAndroid } from '@/theme/platform';
 import messaging from '@react-native-firebase/messaging';
-import { PermissionsAndroid } from 'react-native';
+import { Alert, PermissionsAndroid } from 'react-native';
 import { getFromLS, saveToLS } from '../localStorage/storage';
 
 export const requestUserPermission = async () => {
@@ -48,7 +48,7 @@ export const NoficationListener = () => {
   });
 
   messaging().onMessage(async remoteMessage => {
-    // Alert.alert(remoteMessage.notification.title, remoteMessage.notification.body)
+    Alert.alert(remoteMessage?.notification?.title, remoteMessage?.notification?.body);
     console.log("notification on foreground state", remoteMessage)
   })
 };

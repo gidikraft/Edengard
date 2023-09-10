@@ -6,6 +6,7 @@ import { login, logout } from '../store/authSlice';
 import { RootState } from '@/store/Store';
 import { Box, Button, Icon, Pressable, PrimaryButton, PrimaryInput, Text } from '@/components/';
 import database from '@react-native-firebase/database';
+import auth from '@react-native-firebase/auth';
 
 const things = [
   { title: 'Health', background: 'blueBackground', id: 1 },
@@ -57,7 +58,7 @@ const HomeScreen = () => {
       if (currentLikes === null) return 1;
       return currentLikes + 1;
     });
-  }
+  };
   
   useEffect(() => {
     const reference = dbReference
@@ -72,30 +73,36 @@ const HomeScreen = () => {
   }, []);
 
   
-  useEffect(() => {
-    const userAgeRef = dbReference.ref('/User/Health/age');
+  // useEffect(() => {
+  //   const userAgeRef = dbReference.ref('/User/Health/age');
 
-    userAgeRef.on('value', snapshot => {
-      console.log('Users age: ', snapshot.val());
-    });
+  //   userAgeRef.on('value', snapshot => {
+  //     console.log('Users age: ', snapshot.val());
+  //   });
 
-    dbReference
-      .goOffline()
+  //   dbReference
+  //     .goOffline()
+  //     .then(() => {
+  //       return dbReference.ref(`/User/Health`).update({
+  //         age: 22,
+  //         name: "Health"
+  //       });
+  //     })
+  //     .then(() => {
+  //       console.log('User updated whilst offline.');
+  //     });
+  // }, []);
+
+
+  const loginOutUser = async () => {
+    auth()
+      .signOut()
       .then(() => {
-        return dbReference.ref(`/User/Health`).update({
-          age: 22,
-          name: "Health"
-        });
-      })
-      .then(() => {
-        console.log('User updated whilst offline.');
+        console.log('User signed out!')
+        dispatch(logout());
       });
-  }, []);
-
-
-  const loginAction = async () => {
+    
     // await dbReference.goOnline();
-    dispatch(logout());
   };
 
   return (
@@ -112,7 +119,7 @@ const HomeScreen = () => {
         <Box paddingHorizontal='md' flex={1}>
           <Box flexDirection="row" justifyContent="space-between" marginTop="xl">
             <Text variant="medium16" >Hi, User</Text>
-            <Pressable type='scale' onPress={loginAction}>
+            <Pressable type='scale' onPress={loginOutUser}>
               <Icon name='bell' />
             </Pressable>
           </Box>
@@ -120,7 +127,7 @@ const HomeScreen = () => {
           <Box marginTop='xl'>
             <Text variant="regular24" >1,234.00</Text>
 
-            <Box marginTop="sm" flexDirection='row' alignItems='center'>
+            <Box marginTop="xs" flexDirection='row' alignItems='center'>
               <Icon name='address_book' size={14} />
               <Text variant="medium16" marginLeft='xs'>NGN</Text>
             </Box>
