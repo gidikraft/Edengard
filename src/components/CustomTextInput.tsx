@@ -1,5 +1,3 @@
-/* eslint-disable react-native/no-unused-styles */
-// import { useStyle } from "hooks";
 import React, { useContext, useState } from "react";
 import {
   StyleSheet,
@@ -10,18 +8,9 @@ import {
   TouchableOpacity,
   ViewStyle,
   View,
-  // Text,
 } from "react-native";
-// import DateTimePickerModal from "react-native-modal-datetime-picker";
-// import { Entypo } from "@expo/vector-icons";
-// import { InputLabel, Text } from "components/typography";
-// import { StylingProps } from "types/theme";
-// import { theme } from "theme";
-// import { ThemeContext } from "context";
 import { Controller, Control } from "react-hook-form";
 import Text from "./Text";
-// import { Box } from "components/layout";
-// import LockIcon from "svgs/profile/lock_icon.svg";
 
 export enum inputtype {
   select = "select",
@@ -205,12 +194,7 @@ const CustomTextInput = ({
       />
 
       {errorMessage && (
-        <Text
-          style={{
-            marginTop: 6,
-            color: "error",
-            fontSize: 12,
-          }}>
+        <Text variant='medium12' color='error' marginTop="xs" >
           {errorMessage}
         </Text>
       )}

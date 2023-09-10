@@ -3,6 +3,7 @@ import { StyleProp, ViewStyle } from "react-native";
 import { SvgProps } from "react-native-svg";
 
 import address_book from "../assets/svg/address_book.svg";
+import bell from "../assets/svg/bell.svg";
 import home from "@/assets/svg/home_tab.svg";
 import homeInactive from "@/assets/svg/home_tab_inactive.svg";
 import transactions from "@/assets/svg/transactions_tab_active.svg";
@@ -14,6 +15,7 @@ type IconFunction = React.FC<SvgProps>;
 
 export const ICONS = {
     address_book,
+    bell,
     home,
     "home-inactive": homeInactive,
     transactions,

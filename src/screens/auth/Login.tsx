@@ -10,60 +10,80 @@ import { useTranslation } from "react-i18next";
 const Login = () => {
   const {
     control,
-    handleSubmit,
-    setValue,
-    getValues,
     formState: { errors },
     getFieldState,
+    getValues,
+    handleSubmit,
+    register,
+    setValue,
   } = useForm({
     defaultValues: {
       email: "",
-      // childLastName: "",
-      // classId: "",
-      // student_device: DEVICES[0].name,
-      // birthday: "",
-      // gender: "",
-      // classType: "",
-      // exam: "",
+      password: "",
     },
   });
 
   const dispatch = useDispatch();
-  const { t } = useTranslation();
+  // const { t } = useTranslation();
 
-  const loginUser = () => {
+  const loginUser = (data: { email: string }) => {
+    console.log(data)
     dispatch(login());
-  }
+  };
 
   return (
     <Box flex={1} backgroundColor='white' paddingHorizontal="md">
-      <Box marginTop='xxl' >
-        <Text variant="medium20">{t("auth.")}</Text>
+      <Box flex={1} justifyContent="center" >
+        <Text variant="medium20" color='textColor' marginVertical='sm'>Welcome back</Text>
 
-        <PrimaryInput
-          placeholder='Enter your email'
-          control={control}
-          name="email"
-          label='Email'
-              rules={{
-                required: "First name is required",
-                maxLength: {
-                  value: 100,
-                  message: "Maximum of 100 characters",
-                },
-                pattern: {
-                  value: /^[a-zA-Z ]*$/,
-                  message: "Please enter a valid name",
-                },
-              }}
-          errorMessage={errors.email?.message}
-        />
+        <Box marginTop="xl" >
+          <PrimaryInput
+            placeholder='Enter your email'
+            control={control}
+            name="email"
+            label='Email'
+            rules={{
+              required: "Email is required",
+              maxLength: {
+                value: 100,
+                message: "Maximum of 100 characters",
+              },
+              pattern: {
+                value: /^[a-zA-Z ]*$/,
+                message: "Please enter a valid email",
+              },
+            }}
+            errorMessage={errors.email?.message}
+          />
+        </Box>
+
+        <Box marginTop="md" >
+          <PrimaryInput
+            placeholder='Enter password'
+            control={control}
+            name="password"
+            label='Password'
+            rules={{
+              required: "Password is required",
+              maxLength: {
+                value: 100,
+                message: "Maximum of 100 characters",
+              },
+              pattern: {
+                value: /^[a-zA-Z ]*$/,
+                message: "Please enter a valid password",
+              },
+            }}
+            secureTextEntry
+            errorMessage={errors.password?.message}
+          />
+        </Box>
 
         <Button
           label='Go to tabs'
-          onPress={loginUser}
+          onPress={handleSubmit(loginUser)}
           backgroundColor="buttonGreen"
-          variant='secondary'
+          variant='textColor'
           marginTop='xl'
         />
 

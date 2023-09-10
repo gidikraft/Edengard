@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "208307508706",
+    "project_id": "engard-582b3",
+    "storage_bucket": "engard-582b3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:208307508706:android:370eca13351c3c2472d5bb",
+        "android_client_info": {
+          "package_name": "com.edengardkraft"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCEPHer9pdlNCStmTqSEXQoYYI02r6y9UY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
