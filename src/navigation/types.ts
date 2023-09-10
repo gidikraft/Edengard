@@ -13,6 +13,9 @@ export type RootStackParamList = {
   LoginScreen: undefined;
   SecondScreen: undefined;
   ThirdScreen: undefined;
+  SignupScreen: undefined;
+  ForgotPassword: undefined;
+  VerifyOtp: undefined;
   // EditItem: { item: StoreItemType };
 };
 

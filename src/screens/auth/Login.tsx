@@ -3,14 +3,16 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { login } from '../../store/authSlice';
-import { Box, Button, PrimaryInput, Text } from '@/components/';
+import { Box, Button, Pressable, PrimaryInput, Text } from '@/components/';
 import { useTranslation } from "react-i18next";
 import Toast from 'react-native-toast-message';
 import auth from '@react-native-firebase/auth';
+import { RootStackParamList, RootStackScreenProps } from '@/navigation/types';
 // import Icon from 'react-native-vector-icons/Ionicons';
 
 
-const Login = () => {
+const Login = ({ navigation }: RootStackScreenProps<"LoginScreen">) => {
+  const [isLoading, setIsLoading] = useState(false);
   // Set an initializing state whilst Firebase connects
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState();
@@ -23,6 +25,7 @@ const Login = () => {
   };
 
   const firbaseSignIn = (data: { email: string, password: string }) => {
+    setIsLoading(true)
     auth()
       .signInWithEmailAndPassword(data.email, data.password)
       .then((user) => {
@@ -32,35 +35,33 @@ const Login = () => {
       .catch(error => {
         if (error.code === 'auth/email-already-in-use') {
           console.log('That email address is already in use!');
+          setError("email", {
+            type: "validate",
+            message: 'That email address is already in use!',
+          })
         }
 
         if (error.code === 'auth/invalid-email') {
           console.log('That email address is invalid!');
+          setError("email", {
+            type: "validate",
+            message: 'That email address is invalid!',
+          });
         }
 
         console.error(error, 'firebase signin error');
-      });
-  };
-
-  const firbaseSignup = (data: { email: string, password: string }) => {
-    auth()
-      .createUserWithEmailAndPassword(data.email, data.password)
-      .then((user) => {
-        user.user.sendEmailVerification();
-        dispatch(login());
-        console.log(JSON.stringify(user), 'User account created & signed in!');
+        setError("email", {
+          type: "validate",
+          message: 'An error occured',
+        })
+      }).finally(() => {
+        setIsLoading(false);
       })
-      .catch(error => {
-        if (error.code === 'auth/email-already-in-use') {
-          console.log('That email address is already in use!');
-        }
-        if (error.code === 'auth/invalid-email') {
-          console.log('That email address is invalid!');
-        }
-        console.error(error, 'firebase signin error');
-      });
   };
 
+  const goToSignup = () => {
+    navigation.navigate("SignupScreen");
+  };
 
   const {
     control,
@@ -68,7 +69,7 @@ const Login = () => {
     getFieldState,
     getValues,
     handleSubmit,
-    register,
+    setError,
     setValue,
   } = useForm({
     defaultValues: {
@@ -130,8 +131,12 @@ const Login = () => {
             rules={{
               required: "Password is required",
               maxLength: {
-                value: 100,
-                message: "Maximum of 100 characters",
+                value: 32,
+                message: "Maximum of 32 characters",
+              },
+              minLength: {
+                value: 6,
+                message: 'Password must be 6 or more',
               },
               pattern: {
                 value: /^[a-zA-Z ]*$/,
@@ -142,6 +147,9 @@ const Login = () => {
             errorMessage={errors.password?.message}
           />
         </Box>
+        <Pressable marginTop='md' onPress={goToSignup} type='scale'>
+          <Text textAlign='right' color='buttonGreen'>Forgot password?</Text>
+        </Pressable>
 
         <Button
           label='Login'
@@ -149,16 +157,15 @@ const Login = () => {
           backgroundColor="buttonGreen"
           variant='textColor'
           marginTop='xl'
+          isloading={isLoading}
         />
 
-        <Button
-          label='Create account'
-          onPress={handleSubmit(firbaseSignup)}
-          backgroundColor="gradientBlue"
-          variant='textColor'
-          marginTop='xl'
-        />
-
+        <Box flexDirection='row' justifyContent='center' marginTop='sm'>
+          <Text >Don't have an account?</Text>
+          <Pressable type='scale' onPress={goToSignup} >
+            <Text marginLeft='xs' color='buttonGreen'>Sign up</Text>
+          </Pressable>
+        </Box>
       </Box>
     </Box>
   )
