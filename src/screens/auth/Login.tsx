@@ -5,7 +5,9 @@ import { useDispatch } from 'react-redux';
 import { login } from '../../store/authSlice';
 import { Box, Button, PrimaryInput, Text } from '@/components/';
 import { useTranslation } from "react-i18next";
-// import { login } from '@/store/authSlice';
+import Toast from 'react-native-toast-message';
+// import Icon from 'react-native-vector-icons/Ionicons';
+
 
 const Login = () => {
   const {
@@ -25,16 +27,24 @@ const Login = () => {
 
   const dispatch = useDispatch();
   // const { t } = useTranslation();
+  const showToast = () => {
+    Toast.show({
+      type: 'success',
+      text1: 'Hello',
+      text2: 'This is some something 👋'
+    });
+  }
+
 
   const loginUser = (data: { email: string }) => {
-    console.log(data)
+    // showToast();
     dispatch(login());
   };
 
   return (
     <Box flex={1} backgroundColor='white' paddingHorizontal="md">
       <Box flex={1} justifyContent="center" >
-        <Text variant="medium20" color='textColor' marginVertical='sm'>Welcome back</Text>
+        <Text variant="bold24" color='textColor' marginVertical='sm'>Welcome back</Text>
 
         <Box marginTop="xl" >
           <PrimaryInput
