@@ -1,5 +1,5 @@
 import * as React from "react";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { RootStackParamList } from "./types";
 import BottomTabNavigator from "./BottomTabs";
@@ -8,7 +8,8 @@ import { ForgotPasswordScreen, LoginScreen, SignupScreen } from "@/screens/auth"
 import { RootState } from "@/store/Store";
 import { ProfileScreen } from "@/screens/profile";
 import { TUser } from "@/types/auth";
-import auth from '@react-native-firebase/auth';
+import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
+import analytics from '@react-native-firebase/analytics';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -16,12 +17,15 @@ const RootNavigation = () => {
   const { isAuthenticated } = useSelector((state: RootState) => state.auth)
   // Set an initializing state whilst Firebase connects
   const [initializing, setInitializing] = React.useState(true);
-  const [user, setUser] = React.useState<TUser>();
+  const [user, setUser] = React.useState<FirebaseAuthTypes.User | null>(null);
+
+  const routeNameRef = React.useRef();
+  const navigationRef = React.useRef<NavigationContainerRef>();
 
   // Handle user state changes
-  const onAuthStateChanged = (user) => {
-    console.log(JSON.stringify(user), 'user');
-    setUser(user);
+  const onAuthStateChanged = (userState: React.SetStateAction<FirebaseAuthTypes.User | null>) => {
+    console.log(JSON.stringify(userState), 'user');
+    setUser(userState);
     if (initializing) setInitializing(false);
   };
 
@@ -33,7 +37,24 @@ const RootNavigation = () => {
   if (initializing) return null;
 
   return (
-    <NavigationContainer>
+    <NavigationContainer
+      ref={navigationRef}
+      onReady={() => {
+        routeNameRef.current = navigationRef.current?.getCurrentRoute()?.name;
+      }}
+      onStateChange={async () => {
+        const previousRouteName = routeNameRef.current;
+        const currentRouteName = navigationRef.current?.getCurrentRoute()?.name;
+
+        if (previousRouteName !== currentRouteName) {
+          await analytics().logScreenView({
+            screen_name: currentRouteName,
+            screen_class: currentRouteName,
+          });
+        }
+        routeNameRef.current = currentRouteName;
+      }}
+    >
       <Stack.Navigator>
         {user ? (
           <Stack.Group >

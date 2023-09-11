@@ -12,8 +12,6 @@ const Profile = () => {
   const dispatch = useDispatch();
   const { userData } = useSelector((state: RootState) => state.auth);
   
-  console.log(userData, 'userDatauserData')
-  
   const loginOutUser = async () => {
     firebaseAuth.signOut()
       .then(() => {
