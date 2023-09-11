@@ -1,12 +1,13 @@
 import { SafeAreaView, ScrollView, StyleSheet, } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { Box, Icon, Pressable, Text } from '@/components/';
+import { Box, Icon, IconName, Pressable, Text } from '@/components/';
 import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
-import { PaletteType } from '@/theme';
+import { PaletteType, palette } from '@/theme';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUser } from '@/store/authSlice';
 import { RootState } from '@/store/Store';
+import { RootTabScreenProps } from '@/navigation/types';
 
 type TThings = {
   title: string;
@@ -15,13 +16,13 @@ type TThings = {
 };
 
 const things = [
-  { title: 'Health', background: 'blueBackground', id: 1 },
-  { title: 'Sport', background: 'primary', id: 2 },
-  { title: 'News', background: 'gradientBlue', id: 3 },
-  { title: 'Events', background: 'lightBorder', id: 4 },
+  { title: 'Health', background: 'blueBackground', icon: "health", id: 1 },
+  { title: 'Sport', background: 'buttonGreen', icon: "sports", id: 2 },
+  { title: 'News', background: 'gradientBlue', icon: "news", id: 3 },
+  { title: 'Events', background: 'lightBorder', icon: "events", id: 4 },
 ];
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation}: RootTabScreenProps<"HomeScreen">) => {
   const { userData } = useSelector((state: RootState) => state.auth);
 
   const dbReference = database();
@@ -32,7 +33,7 @@ const HomeScreen = () => {
     dbReference.ref(`/User/${name}`).update({
       age: 30,
     })
-    .then(() => console.log('Data updated to db.'));
+      .then(() => console.log('Data updated to db.'));
   };
 
   const onPostLike = (postId: string) => {
@@ -44,13 +45,13 @@ const HomeScreen = () => {
       return currentLikes + 1;
     });
   };
-  
+
   useEffect(() => {
     const username = firebaseAuth?.currentUser?.email.split("@")?.[0];
     const reference = dbReference
       .ref(`/User/${username}`)
       .on('value', snapshot => {
-        console.log('User data: ', snapshot.val());
+        // console.log('User data: ', snapshot.val());
         dispatch(setUser(snapshot.val()));
       });
 
@@ -58,7 +59,11 @@ const HomeScreen = () => {
     return () => dbReference.ref('/User').off('child_added', reference);
   }, []);
 
-  
+  const goToNotification = () => {
+    navigation.navigate("NotificationScreen");
+  };
+
+
   // useEffect(() => {
   //   const userAgeRef = dbReference.ref('/User/Health/age');
 
@@ -84,7 +89,7 @@ const HomeScreen = () => {
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: '#FFF',
+        backgroundColor: palette.background,
       }}
     >
       <ScrollView
@@ -96,7 +101,7 @@ const HomeScreen = () => {
             <Box width='90%'>
               <Text variant="medium16" textTransform='capitalize' >Hi, {userData?.name}</Text>
             </Box>
-            <Pressable type='scale' width='20%'>
+            <Pressable type='scale' width='20%' onPress={goToNotification}>
               <Icon name='bell' />
             </Pressable>
           </Box>
@@ -114,45 +119,80 @@ const HomeScreen = () => {
 
           <Box flexDirection='row' flexWrap='wrap' justifyContent='space-between'>
             {things.map((item) => {
-              const { background, id, title } = item;
+              const { background, id, title, icon } = item;
               return (
-                <Box
-                  width='48%'
-                  height={150}
-                  backgroundColor={background}
-                  marginTop='sm'
-                  borderRadius={10}
-                  id={id.toString()}
-                  justifyContent='flex-end'
-                  alignItems='center'
-                  paddingVertical='sm'
-                  onPress={() => updateDb(title)}
-                  type='scale'
-                >
-                  <Text variant="medium16" marginLeft='xs' color='textColor'>{title}</Text>
-                </Box>
+                <EventsItem
+                  background={background as PaletteType}
+                  icon={icon as IconName}
+                  id={id}
+                  title={title}
+                  itemPress={() => { }}
+                />
               )
             })}
           </Box>
 
           <Text variant="regular14" marginTop='xl' color='secondary'>Your favorite people.</Text>
 
-          <Box flexDirection="row" marginTop="md">
-            {new Array(4).fill(0).map((_, i) => {
-              return (
-                <Box justifyContent='center' key={i.toString()}>
-                  <Box height={60} width={60} borderRadius={30} backgroundColor="pinBackground" marginRight='sm' />
-                  <Text variant="medium12" marginTop='xs' color='textColor'>Username</Text>
-                </Box>
-              )
-            })}
-          </Box>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+          >
+            <Box flexDirection="row" marginTop="md">
+              {new Array(7).fill(0).map((_, i) => {
+                return (
+                  <Box justifyContent='center' marginRight='sm' key={i.toString()}>
+                    {/* <Box height={60} width={60} borderRadius={30} backgroundColor="pinBackground" marginRight='sm' /> */}
+                    <Icon name='profile_pic' size={60} />
+                    <Text variant="medium12" marginTop='xs' color='textColor'>Username</Text>
+                  </Box>
+                )
+              })}
+            </Box>
+
+          </ScrollView>
+
         </Box>
 
       </ScrollView>
     </SafeAreaView>
   )
 };
+
+type EventsProps = {
+  background: PaletteType;
+  icon: IconName;
+  id: number
+  itemPress: () => void
+  title: string;
+}
+
+const EventsItem = ({
+  background,
+  icon,
+  id,
+  itemPress,
+  title,
+}: EventsProps) => {
+  return (
+    <Box
+      width='48%'
+      height={150}
+      marginTop='sm'
+      borderRadius={10}
+      id={id.toString()}
+      justifyContent='center'
+      alignItems='center'
+      paddingVertical='sm'
+      backgroundColor={background}
+    >
+      <Pressable alignItems='center' onPress={itemPress} type='scale'>
+        <Icon name={icon} size={60} />
+        <Text variant="medium16" marginTop='md' color='textColor'>{title}</Text>
+      </Pressable>
+    </Box>
+  )
+}
 
 export default HomeScreen;
 

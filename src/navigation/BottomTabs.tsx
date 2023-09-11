@@ -3,9 +3,9 @@ import useColorScheme from "@/hooks/useColorScheme";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import colors from "../theme/colors";
 import { RootTabParamList, RootTabScreenProps } from "./types";
-import { Home, SecondScreen, ThirdScreen } from "@/screens/";
 import { ProfileScreen } from "@/screens/profile";
 import { palette } from "@/theme";
+import { EventsScreen, HomeScreen } from "@/screens/Home";
 
 /**
  * Bottom Tab.
@@ -24,7 +24,7 @@ function BottomTabNavigator() {
 			}}>
 			<BottomTab.Screen
 				name="HomeScreen"
-				component={Home}
+				component={HomeScreen}
 				options={({ navigation }: RootTabScreenProps<'HomeScreen'>) => ({
 					headerShown: false,
 					title: 'Home',
@@ -47,8 +47,8 @@ function BottomTabNavigator() {
 			/>
 
 			<BottomTab.Screen
-				name="SecondScreen"
-				component={SecondScreen}
+				name="EventsScreen"
+				component={EventsScreen}
 				options={{
 					headerShown: false,
 					title: 'Transfer',
@@ -62,7 +62,7 @@ function BottomTabNavigator() {
 				options={{
 					headerShown: false,
 					title: 'Settings',
-					tabBarIcon: ({ color, focused }) => <Icon name={focused ? "settings" : "transactions-inactive"} color={color} size={16} fill={color} />,
+					tabBarIcon: ({ color, focused }) => <Icon name={focused ? "user" : "user-inactive"} color={color} size={16} fill={color} />,
 				}}
 			/>
 

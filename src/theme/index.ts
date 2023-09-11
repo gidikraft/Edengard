@@ -185,7 +185,14 @@ const theme = createTheme({
       fontFamily: "Poppins-Medium",
       fontSize: 20,
       fontWeight: "600",
-      lineHeight: 20,
+      lineHeight: 24,
+    },
+    medium24: {
+      color: "textColor",
+      fontFamily: "Poppins-Medium",
+      fontSize: 24,
+      fontWeight: "600",
+      lineHeight: 28,
     },
     regular12: {
       color: "textColor",

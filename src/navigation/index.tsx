@@ -6,10 +6,10 @@ import BottomTabNavigator from "./BottomTabs";
 import { useSelector } from "react-redux";
 import { ForgotPasswordScreen, LoginScreen, SignupScreen } from "@/screens/auth";
 import { RootState } from "@/store/Store";
-import { ProfileScreen } from "@/screens/profile";
 import { TUser } from "@/types/auth";
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import analytics from '@react-native-firebase/analytics';
+import { NotificationScreen } from "@/screens/Home";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -65,11 +65,11 @@ const RootNavigation = () => {
               options={{ headerShown: false }}
             />
 
-            {/* <Stack.Screen
-              name="ProfileSCreen"
-              component={ProfileScreen}
+            <Stack.Screen
+              name="NotificationScreen"
+              component={NotificationScreen}
               options={{ headerShown: false }}
-            /> */}
+            />
           </Stack.Group>
 
         ) : (

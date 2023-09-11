@@ -191,7 +191,7 @@ export default Signup;
 const styles = StyleSheet.create({
   maincontainer: {
     flex: 1,
-    backgroundColor: palette.white
+    backgroundColor: palette.background
   },
 
 })

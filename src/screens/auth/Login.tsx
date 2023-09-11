@@ -78,7 +78,7 @@ const Login = ({ navigation }: RootStackScreenProps<"LoginScreen">) => {
   });
   
   return (
-    <Box flex={1} backgroundColor='white' paddingHorizontal="md">
+    <Box flex={1} backgroundColor='background' paddingHorizontal="md">
       <Box flex={1} justifyContent="center" >
         <Text variant="bold24" color='textColor' marginVertical='sm'>Welcome back</Text>
 

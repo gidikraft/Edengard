@@ -1,24 +1,28 @@
-import { SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
-import React from 'react';
-import { Box, Button, Icon, Pressable, Text } from '@/components/';
+import { Dimensions, Modal, SafeAreaView, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import React, { useState } from 'react';
+import { Box, Button, CenterModal, Icon, Pressable, PrimaryButton, Text } from '@/components/';
 import { palette } from '@/theme';
 import { useDispatch, useSelector } from 'react-redux';
 import auth from '@react-native-firebase/auth';
 import { logout } from '@/store/authSlice';
 import { RootState } from '@/store/Store';
+import { LogoutModal } from '@/components/Modals';
 
 const Profile = () => {
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
   const firebaseAuth = auth();
   const dispatch = useDispatch();
   const { userData } = useSelector((state: RootState) => state.auth);
-  
+
+  const toggleLogoutModal = () => setShowLogoutModal(prev => !prev);
+
   const loginOutUser = async () => {
-    firebaseAuth.signOut()
+    await firebaseAuth.signOut()
       .then(() => {
-        console.log('User signed out!')
+        console.log('User signed out!');
         // dispatch(logout());
       });
-    
+
     // await dbReference.goOnline();
   };
 
@@ -79,13 +83,17 @@ const Profile = () => {
             <ProfileItem
               logout
               title='Logout'
-              itemPress={loginOutUser}
+              itemPress={toggleLogoutModal}
             />
 
           </Box>
-
         </Box>
       </ScrollView>
+      <LogoutModal
+        closeModal={toggleLogoutModal}
+        logout={loginOutUser}
+        modalVisible={showLogoutModal}
+      />
     </SafeAreaView>
   )
 };
@@ -109,7 +117,7 @@ const ProfileItem = ({ logout, title, itemPress }: ProfileItemProps) => {
       onPress={itemPress}
       type='scale'
     >
-      <Text variant='regular16' color={logout? 'error' : 'textColor'}>{title}</Text>
+      <Text variant='regular16' color={logout ? 'error' : 'textColor'}>{title}</Text>
 
       <Icon name='link' size={15} />
     </Pressable>
@@ -119,6 +127,6 @@ const ProfileItem = ({ logout, title, itemPress }: ProfileItemProps) => {
 const styles = StyleSheet.create({
   maincontainer: {
     flex: 1,
-    backgroundColor: palette.white
+    backgroundColor: palette.background
   },
 });

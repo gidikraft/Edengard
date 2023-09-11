@@ -6,6 +6,7 @@ export type { BoxProps } from "./Box";
 export { default as Box } from "./Box";
 export type { IconName, IconProps } from "./Icons";
 export { default as Icon } from "./Icons";
+export { default as CenterModal } from "./CenterModal";
 export type { PressableProps } from "./Pressable";
 export { default as Pressable } from "./Pressable";
 export type { ButtonProps } from "./ThemedButton";
