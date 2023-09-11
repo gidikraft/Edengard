@@ -1,4 +1,4 @@
-import { GestureResponderEvent } from "react-native";
+import { ActivityIndicator, GestureResponderEvent } from "react-native";
 import Animated, {
   FadeIn,
   FadeInUp,
@@ -6,20 +6,17 @@ import Animated, {
   FadeOutDown,
 } from "react-native-reanimated";
 
-// import { PaletteType, useTheme } from "@/constants/theme";
-
-import ActivityIndicator from "./ActivityIndicator";
 import Box from "./Box";
 import Icon, { IconName } from "./Icons";
 import Pressable, { PressableProps } from "./Pressable";
 import Text, { TextProps } from "./Text";
-import { PaletteType, useTheme } from "../../src/theme";
-// import { PaletteType, useTheme  } from "src/theme";
+import { PaletteType, useTheme } from "@/theme";
 
 const AnimatedBox = Animated.createAnimatedComponent(Box);
 
 export type ButtonProps = PressableProps & {
   background?: PaletteType;
+  loadingColor?: PaletteType;
   icon?: IconName;
   iconSize?: number;
   isloading?: boolean;
@@ -29,18 +26,19 @@ export type ButtonProps = PressableProps & {
 };
 
 /**
- * Custom `Button` component with two variants (primary & secondary)
+ * Custom `Button` component with multi variants (primary | secondary | "textColor" | "white)
  * inherits Pressable Props
  * @see {@link PressableProps}
  */
 function Button({
   background = "primary",
+  loadingColor= "black",
   icon,
   iconSize = 16,
   isloading = false,
   label,
   labelProps,
-  variant = "primary",
+  variant = "textColor",
   onPress,
   ...rest
 }: ButtonProps) {
@@ -55,7 +53,8 @@ function Button({
     <Pressable
       alignItems="center"
       backgroundColor={background}
-      borderRadius={10}
+      borderRadius={spacing.sml}
+      disabled={isloading}
       justifyContent="center"
       onPress={handlePress}
       // paddingVertical="md"
@@ -70,8 +69,8 @@ function Button({
           key={`${isloading}`}
         >
           <ActivityIndicator
-            // size={16}
-            // type={variant === "primary" ? "light" : "dark"}
+            size={spacing.md}
+            color={loadingColor}
           />
         </AnimatedBox>
       ) : (
@@ -82,13 +81,13 @@ function Button({
           flexDirection="row"
           justifyContent="center"
         >
-          {icon ? (
+          {icon && (
             <Icon
               name={icon as IconName}
               size={iconSize}
               style={{ marginRight: spacing.sm }}
             />
-          ) : undefined}
+          )}
           <Text
             color={variant}
             textAlign="justify"

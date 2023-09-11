@@ -1,47 +1,32 @@
 import { SafeAreaView, ScrollView, StyleSheet, } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
-import { login, logout } from '../store/authSlice';
-import { RootState } from '@/store/Store';
-import { Box, Button, Icon, Pressable, PrimaryButton, PrimaryInput, Text } from '@/components/';
+import { Box, Icon, Pressable, Text } from '@/components/';
 import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
+import { PaletteType } from '@/theme';
+import { useDispatch, useSelector } from 'react-redux';
+import { setUser } from '@/store/authSlice';
+import { RootState } from '@/store/Store';
+
+type TThings = {
+  title: string;
+  id: number;
+  background: PaletteType
+};
 
 const things = [
   { title: 'Health', background: 'blueBackground', id: 1 },
-  { title: 'Sport', background: 'contactColor', id: 2 },
+  { title: 'Sport', background: 'primary', id: 2 },
   { title: 'News', background: 'gradientBlue', id: 3 },
   { title: 'Events', background: 'lightBorder', id: 4 },
-]
+];
 
 const HomeScreen = () => {
-  const [name, setName] = useState("Coder");
-  const {
-    control,
-    handleSubmit,
-    setValue,
-    getValues,
-    formState: { errors },
-    getFieldState,
-  } = useForm({
-    defaultValues: {
-      childFirstName: "",
-      // childLastName: "",
-    },
-  });
+  const { userData } = useSelector((state: RootState) => state.auth);
 
   const dbReference = database();
+  const firebaseAuth = auth();
   const dispatch = useDispatch();
-
-  const addToDb = (name: string) => {
-    //set to null to delete data or .remove()
-    dbReference.ref(`/User/${name}`).set({
-      name: name,
-      age: 300,
-    })
-    .then(() => console.log('Data set to db.'));
-  };
 
   const updateDb = (name: string) => {
     dbReference.ref(`/User/${name}`).update({
@@ -61,11 +46,12 @@ const HomeScreen = () => {
   };
   
   useEffect(() => {
+    const username = firebaseAuth?.currentUser?.email.split("@")?.[0];
     const reference = dbReference
-      .ref('/User')
+      .ref(`/User/${username}`)
       .on('value', snapshot => {
-        // console.log('User data: ', snapshot.val());
-        setName(snapshot.val())
+        console.log('User data: ', snapshot.val());
+        dispatch(setUser(snapshot.val()));
       });
 
     // Stop listening for updates when no longer required
@@ -94,17 +80,6 @@ const HomeScreen = () => {
   // }, []);
 
 
-  const loginOutUser = async () => {
-    auth()
-      .signOut()
-      .then(() => {
-        console.log('User signed out!')
-        dispatch(logout());
-      });
-    
-    // await dbReference.goOnline();
-  };
-
   return (
     <SafeAreaView
       style={{
@@ -118,8 +93,8 @@ const HomeScreen = () => {
       >
         <Box paddingHorizontal='md' flex={1}>
           <Box flexDirection="row" justifyContent="space-between" marginTop="xl">
-            <Text variant="medium16" >Hi, User</Text>
-            <Pressable type='scale' onPress={loginOutUser}>
+            <Text variant="medium16" textTransform='capitalize'>Hi, {userData?.name}</Text>
+            <Pressable type='scale' >
               <Icon name='bell' />
             </Pressable>
           </Box>
@@ -170,30 +145,6 @@ const HomeScreen = () => {
               )
             })}
           </Box>
-
-          {/* <PrimaryInput
-            placeholder='Enter your name'
-            control={control}
-            name="childFirstName"
-            label='Name'
-            errorMessage={errors.childFirstName?.message}
-          />
-          <PrimaryButton
-            label='Go to next'
-            onPress={loginAction}
-          />
-          <Pressable onPress={buttonPress} type='scale'>
-            <Icon name='address_book' />
-          </Pressable> */}
-
-          {/* <Button
-            label='Go to tabs'
-            onPress={() => onPostLike('2').then(transaction => {
-              console.log('New post like count: ', transaction.snapshot.val());
-            })}
-            backgroundColor="buttonGreen"
-            variant='secondary'
-          /> */}
         </Box>
 
       </ScrollView>

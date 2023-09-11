@@ -1,36 +1,32 @@
-import { StyleSheet, } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import { Alert, StyleSheet, } from 'react-native';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { login } from '../../store/authSlice';
 import { Box, Button, Pressable, PrimaryInput, Text } from '@/components/';
-import { useTranslation } from "react-i18next";
-import Toast from 'react-native-toast-message';
 import auth from '@react-native-firebase/auth';
-import { RootStackParamList, RootStackScreenProps } from '@/navigation/types';
+import { RootStackScreenProps } from '@/navigation/types';
 // import Icon from 'react-native-vector-icons/Ionicons';
 
 
 const Login = ({ navigation }: RootStackScreenProps<"LoginScreen">) => {
   const [isLoading, setIsLoading] = useState(false);
-  // Set an initializing state whilst Firebase connects
-  const [initializing, setInitializing] = useState(true);
-  const [user, setUser] = useState();
 
-  // Handle user state changes
-  const onAuthStateChanged = (user) => {
-    console.log(JSON.stringify(user), 'user');
-    setUser(user);
-    if (initializing) setInitializing(false);
-  };
+  const firebaseAuth = auth();
+  const dispatch = useDispatch();
+  // const { t } = useTranslation();
 
   const firbaseSignIn = (data: { email: string, password: string }) => {
-    setIsLoading(true)
-    auth()
+    setIsLoading(true);
+    firebaseAuth
       .signInWithEmailAndPassword(data.email, data.password)
       .then((user) => {
-        console.log(JSON.stringify(user), 'User signed in!');
-        dispatch(login());
+        if (user.user?.emailVerified) {
+          console.log(JSON.stringify(user), 'Successfully signed in!');
+          dispatch(login());
+        } else {
+          Alert.alert("Email not verified", "Please verify your email by clicking the link sent to your mail");
+        }
       })
       .catch(error => {
         if (error.code === 'auth/email-already-in-use') {
@@ -53,7 +49,7 @@ const Login = ({ navigation }: RootStackScreenProps<"LoginScreen">) => {
         setError("email", {
           type: "validate",
           message: 'An error occured',
-        })
+        });
       }).finally(() => {
         setIsLoading(false);
       })
@@ -61,6 +57,10 @@ const Login = ({ navigation }: RootStackScreenProps<"LoginScreen">) => {
 
   const goToSignup = () => {
     navigation.navigate("SignupScreen");
+  };
+
+  const goToResetPassword = () => {
+    navigation.navigate("ForgotPasswordScreen");
   };
 
   const {
@@ -77,31 +77,13 @@ const Login = ({ navigation }: RootStackScreenProps<"LoginScreen">) => {
       password: "",
     },
   });
-
-  const dispatch = useDispatch();
-  // const { t } = useTranslation();
-  const showToast = () => {
-    Toast.show({
-      type: 'success',
-      text1: 'Hello',
-      text2: 'This is some something 👋'
-    });
-  };
-
-  useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber; // unsubscribe on unmount
-  }, []);
-
-  if (initializing) return null;
-
-  // if (!user) {
+  
   return (
     <Box flex={1} backgroundColor='white' paddingHorizontal="md">
       <Box flex={1} justifyContent="center" >
-        <Text variant="bold24" color='textColor' marginVertical='sm'>Welcome back {user?.email}</Text>
+        <Text variant="bold24" color='textColor' marginVertical='sm'>Welcome back</Text>
 
-        <Box marginTop="xl" >
+        <Box marginTop="lg" >
           <PrimaryInput
             placeholder='Enter your email'
             control={control}
@@ -147,7 +129,7 @@ const Login = ({ navigation }: RootStackScreenProps<"LoginScreen">) => {
             errorMessage={errors.password?.message}
           />
         </Box>
-        <Pressable marginTop='md' onPress={goToSignup} type='scale'>
+        <Pressable marginTop='md' onPress={goToResetPassword} type='scale'>
           <Text textAlign='right' color='buttonGreen'>Forgot password?</Text>
         </Pressable>
 
@@ -169,7 +151,6 @@ const Login = ({ navigation }: RootStackScreenProps<"LoginScreen">) => {
       </Box>
     </Box>
   )
-  // }
 };
 
 export default Login;

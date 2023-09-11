@@ -14,7 +14,7 @@ export type RootStackParamList = {
   SecondScreen: undefined;
   ThirdScreen: undefined;
   SignupScreen: undefined;
-  ForgotPassword: undefined;
+  ForgotPasswordScreen: undefined;
   VerifyOtp: undefined;
   // EditItem: { item: StoreItemType };
 };
@@ -25,7 +25,7 @@ export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
   export type RootTabParamList = {
     HomeScreen: undefined;
     SecondScreen: undefined;
-    ThirdScreen: undefined;
+    ProfileSCreen: undefined;
     TransferLanding: undefined;
 };
 
