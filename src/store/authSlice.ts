@@ -10,7 +10,7 @@ interface initialAppState {
 const initialUserData = {
 	name: "",
 	userInfo: "",
-}
+};
 
 const initialState: initialAppState = {
   isAuthenticated: false,

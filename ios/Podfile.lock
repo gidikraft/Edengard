@@ -9,6 +9,9 @@ PODS:
     - React-Core (= 0.72.4)
     - React-jsi (= 0.72.4)
     - ReactCommon/turbomodule/core (= 0.72.4)
+  - Firebase/AppDistribution (10.14.0):
+    - Firebase/CoreOnly
+    - FirebaseAppDistribution (~> 10.14.0-beta)
   - Firebase/Auth (10.14.0):
     - Firebase/CoreOnly
     - FirebaseAuth (~> 10.14.0)
@@ -21,6 +24,11 @@ PODS:
     - Firebase/CoreOnly
     - FirebaseMessaging (~> 10.14.0)
   - FirebaseAppCheckInterop (10.14.0)
+  - FirebaseAppDistribution (10.14.0-beta):
+    - FirebaseCore (~> 10.0)
+    - FirebaseInstallations (~> 10.0)
+    - GoogleUtilities/AppDelegateSwizzler (~> 7.8)
+    - GoogleUtilities/UserDefaults (~> 7.8)
   - FirebaseAuth (10.14.0):
     - FirebaseAppCheckInterop (~> 10.0)
     - FirebaseCore (~> 10.0)
@@ -506,6 +514,10 @@ PODS:
   - RNFBApp (18.3.2):
     - Firebase/CoreOnly (= 10.14.0)
     - React-Core
+  - RNFBAppDistribution (18.3.2):
+    - Firebase/AppDistribution (= 10.14.0)
+    - React-Core
+    - RNFBApp
   - RNFBAuth (18.3.2):
     - Firebase/Auth (= 10.14.0)
     - React-Core
@@ -600,6 +612,7 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
+  - "RNFBAppDistribution (from `../node_modules/@react-native-firebase/app-distribution`)"
   - "RNFBAuth (from `../node_modules/@react-native-firebase/auth`)"
   - "RNFBDatabase (from `../node_modules/@react-native-firebase/database`)"
   - "RNFBMessaging (from `../node_modules/@react-native-firebase/messaging`)"
@@ -612,6 +625,7 @@ SPEC REPOS:
   trunk:
     - Firebase
     - FirebaseAppCheckInterop
+    - FirebaseAppDistribution
     - FirebaseAuth
     - FirebaseCore
     - FirebaseCoreExtension
@@ -714,6 +728,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-async-storage/async-storage"
   RNFBApp:
     :path: "../node_modules/@react-native-firebase/app"
+  RNFBAppDistribution:
+    :path: "../node_modules/@react-native-firebase/app-distribution"
   RNFBAuth:
     :path: "../node_modules/@react-native-firebase/auth"
   RNFBDatabase:
@@ -736,6 +752,7 @@ SPEC CHECKSUMS:
   FBReactNativeSpec: 3fc2d478e1c4b08276f9dd9128f80ec6d5d85c1f
   Firebase: 6c1bf3f534bc422d52af2e41fe0d50bf08b6b773
   FirebaseAppCheckInterop: c87f1d5421c852413dd936b2b2340b21e62501a0
+  FirebaseAppDistribution: 25dfacb443e46ede519b27e5c107b22ac66f6c32
   FirebaseAuth: bd1ae3d28beb83bfe9247e50eb82688b683dd770
   FirebaseCore: 6fc17ac9f03509d51c131298aacb3ee5698b4f02
   FirebaseCoreExtension: 976638051b1a46b503afce7ec80277f9161f2040
@@ -789,6 +806,7 @@ SPEC CHECKSUMS:
   RecaptchaInterop: 7d1a4a01a6b2cb1610a47ef3f85f0c411434cb21
   RNCAsyncStorage: c913ede1fa163a71cea118ed4670bbaaa4b511bb
   RNFBApp: 8060d3ea89359ae78e0d1e6362a8ce9d2f5d19a8
+  RNFBAppDistribution: 0eb44ed130b03ba31c63edce972f3df68ec9ceb3
   RNFBAuth: 5db7274fc2d8701b1e9cc3fd76eba677f5260648
   RNFBDatabase: 6a5404e90279494f3191b020c5178e8f55837296
   RNFBMessaging: 40f7d8b2dd76b888b38df6baf54898867caef5fe

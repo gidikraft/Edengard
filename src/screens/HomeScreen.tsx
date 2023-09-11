@@ -92,9 +92,11 @@ const HomeScreen = () => {
         style={{ flex: 1 }}
       >
         <Box paddingHorizontal='md' flex={1}>
-          <Box flexDirection="row" justifyContent="space-between" marginTop="xl">
-            <Text variant="medium16" textTransform='capitalize'>Hi, {userData?.name}</Text>
-            <Pressable type='scale' >
+          <Box flexDirection="row" justifyContent="space-between" marginTop="xl" width='100%' >
+            <Box width='90%'>
+              <Text variant="medium16" textTransform='capitalize' >Hi, {userData?.name}</Text>
+            </Box>
+            <Pressable type='scale' width='20%'>
               <Icon name='bell' />
             </Pressable>
           </Box>
