@@ -10,6 +10,7 @@ import { TUser } from "@/types/auth";
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import analytics from '@react-native-firebase/analytics';
 import { NotificationScreen } from "@/screens/Home";
+import { SubscriptionScreen } from "@/screens/events";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -24,7 +25,7 @@ const RootNavigation = () => {
 
   // Handle user state changes
   const onAuthStateChanged = (userState: React.SetStateAction<FirebaseAuthTypes.User | null>) => {
-    console.log(JSON.stringify(userState), 'user');
+    // console.log(JSON.stringify(userState), 'user');
     setUser(userState);
     if (initializing) setInitializing(false);
   };
@@ -70,8 +71,13 @@ const RootNavigation = () => {
               component={NotificationScreen}
               options={{ headerShown: false }}
             />
-          </Stack.Group>
 
+            <Stack.Screen
+              name="SubscriptionScreen"
+              component={SubscriptionScreen}
+              options={{ headerShown: false }}
+            />
+          </Stack.Group>
         ) : (
           <Stack.Group >
             <Stack.Screen

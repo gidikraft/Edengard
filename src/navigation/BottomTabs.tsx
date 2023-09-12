@@ -51,7 +51,7 @@ function BottomTabNavigator() {
 				component={EventsScreen}
 				options={{
 					headerShown: false,
-					title: 'Transfer',
+					title: 'Events',
 					tabBarIcon: ({ color, focused }) => <Icon name={focused ? "transfer" : "transfer-inactive"} color={color} size={16} />,
 				}}
 			/>

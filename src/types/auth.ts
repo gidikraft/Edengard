@@ -21,5 +21,6 @@ interface ProviderData {
 
 export type FUser = {
   name: string,
-  userInfo: string
+  userInfo: string,
+	accessToken: string | null,
 };

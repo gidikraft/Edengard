@@ -18,6 +18,9 @@
       "@/*": [
         "./src/*"
       ],
+      "@/api": [
+        "src/api/*"
+      ],
       "@/assets": [
         "./src/assets/*"
       ],
@@ -44,6 +47,12 @@
       ],
       "@/store": [
         "./src/store/*"
+      ],
+      "@/types": [
+        "./src/types/*"
+      ],
+      "@/theme": [
+        "./src/theme/*"
       ],
       "@/utils": [
         "./src/utils/*"

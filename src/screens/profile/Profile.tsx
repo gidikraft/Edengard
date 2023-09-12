@@ -1,7 +1,7 @@
 import { Dimensions, Modal, SafeAreaView, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import React, { useState } from 'react';
 import { Box, Button, CenterModal, Icon, Pressable, PrimaryButton, Text } from '@/components/';
-import { palette } from '@/theme';
+import { palette } from '@/theme/';
 import { useDispatch, useSelector } from 'react-redux';
 import auth from '@react-native-firebase/auth';
 import { logout } from '@/store/authSlice';
@@ -11,7 +11,7 @@ import { LogoutModal } from '@/components/Modals';
 const Profile = () => {
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const firebaseAuth = auth();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const { userData } = useSelector((state: RootState) => state.auth);
 
   const toggleLogoutModal = () => setShowLogoutModal(prev => !prev);

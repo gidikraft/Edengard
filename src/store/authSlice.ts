@@ -10,6 +10,7 @@ interface initialAppState {
 const initialUserData = {
 	name: "",
 	userInfo: "",
+  accessToken: null
 };
 
 const initialState: initialAppState = {

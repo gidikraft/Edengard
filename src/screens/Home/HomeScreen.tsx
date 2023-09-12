@@ -3,11 +3,12 @@ import React, { useEffect, useState } from 'react';
 import { Box, Icon, IconName, Pressable, Text } from '@/components/';
 import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
-import { PaletteType, palette } from '@/theme';
-import { useDispatch, useSelector } from 'react-redux';
+import { PaletteType, palette } from '@/theme/';
 import { setUser } from '@/store/authSlice';
-import { RootState } from '@/store/Store';
 import { RootTabScreenProps } from '@/navigation/types';
+import { useAppDispatch } from '@/hooks/';
+import { useAppSelector } from '@/hooks/';
+import { useGetNotificationsQuery, useGetUsersQuery } from '../../api/services';
 
 type TThings = {
   title: string;
@@ -22,12 +23,15 @@ const things = [
   { title: 'Events', background: 'lightBorder', icon: "events", id: 4 },
 ];
 
-const HomeScreen = ({ navigation}: RootTabScreenProps<"HomeScreen">) => {
-  const { userData } = useSelector((state: RootState) => state.auth);
+const HomeScreen = ({ navigation }: RootTabScreenProps<"HomeScreen">) => {
+  const { userData } = useAppSelector((state) => state.auth);
+
+  const { data, error, } = useGetNotificationsQuery('users');
+  // console.log(userData, error, 'favorites');
 
   const dbReference = database();
   const firebaseAuth = auth();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const updateDb = (name: string) => {
     dbReference.ref(`/User/${name}`).update({
@@ -51,7 +55,7 @@ const HomeScreen = ({ navigation}: RootTabScreenProps<"HomeScreen">) => {
     const reference = dbReference
       .ref(`/User/${username}`)
       .on('value', snapshot => {
-        // console.log('User data: ', snapshot.val());
+        console.log('User data: ', snapshot.val());
         dispatch(setUser(snapshot.val()));
       });
 
@@ -63,6 +67,9 @@ const HomeScreen = ({ navigation}: RootTabScreenProps<"HomeScreen">) => {
     navigation.navigate("NotificationScreen");
   };
 
+  const getUId = () => {
+    return Date.now() + (Math.random() * 100000).toFixed().toString();
+  };
 
   // useEffect(() => {
   //   const userAgeRef = dbReference.ref('/User/Health/age');
@@ -139,21 +146,18 @@ const HomeScreen = ({ navigation}: RootTabScreenProps<"HomeScreen">) => {
             showsHorizontalScrollIndicator={false}
           >
             <Box flexDirection="row" marginTop="md">
-              {new Array(7).fill(0).map((_, i) => {
+              {data?.map((item) => {
+                const { name, id } = item;
                 return (
-                  <Box justifyContent='center' marginRight='sm' key={i.toString()}>
-                    {/* <Box height={60} width={60} borderRadius={30} backgroundColor="pinBackground" marginRight='sm' /> */}
+                  <Box justifyContent='center' marginRight='sm' key={id.toString()} alignItems='center'>
                     <Icon name='profile_pic' size={60} />
-                    <Text variant="medium12" marginTop='xs' color='textColor'>Username</Text>
+                    <Text variant="medium12" marginTop='xs' color='textColor'>{name?.split(" ")[0]}</Text>
                   </Box>
                 )
               })}
             </Box>
-
           </ScrollView>
-
         </Box>
-
       </ScrollView>
     </SafeAreaView>
   )

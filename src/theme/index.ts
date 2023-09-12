@@ -10,6 +10,7 @@ export const palette = {
   blackTint: "#696977",
   blue: "#3878B8",
   blueBackground: "#00d4ff",
+  blueHighlight: "#EAF2FF",
   border: "#D0D0D0",
   buttonGreen: "#51AAB1",
   contactColor: "rgba(99, 122, 135, 1)",
@@ -26,6 +27,7 @@ export const palette = {
   secondary: "#878681",
   success: "#97E225",
   superlightgrey: "rgba(239, 239, 239, 1)",
+  textBlue: "#006FFD",
   textColor: "#262626",
   textGreen: "#00AA8B",
   textInputBackground: "#EFEFEF",
@@ -59,6 +61,7 @@ const theme = createTheme({
     md: wp(16), // medium
     sl: wp(20), // semi large
     sm: wp(12), // semi medium
+    sms: wp(6), // semi small
     sml: wp(8), // small
     ssm: wp(10), // semi small medium
     xl: wp(32), // extra large
@@ -95,6 +98,13 @@ const theme = createTheme({
       fontSize: 24,
       fontWeight: "600",
       lineHeight: 36,
+    },
+    bold14: {
+      color: "textColor",
+      fontFamily: "Poppins-Bold",
+      fontSize: 14,
+      fontWeight: "800",
+      lineHeight: 16.94,
     },
     bold16: {
       color: "textColor",
@@ -152,6 +162,13 @@ const theme = createTheme({
       fontWeight: "300",
       lineHeight: 20,
     },
+    medium10: {
+      color: "textColor",
+      fontFamily: "Poppins-Medium",
+      fontSize: 10,
+      fontWeight: "600",
+      lineHeight: 20,
+    },
     medium12: {
       color: "textColor",
       fontFamily: "Poppins-Medium",
@@ -194,12 +211,19 @@ const theme = createTheme({
       fontWeight: "600",
       lineHeight: 28,
     },
+    regular10: {
+      color: "textColor",
+      fontFamily: "Poppins-Regular",
+      fontSize: 10,
+      fontWeight: "400",
+      lineHeight: 14,
+    },
     regular12: {
       color: "textColor",
       fontFamily: "Poppins-Regular",
       fontSize: 12,
       fontWeight: "400",
-      lineHeight: 20,
+      lineHeight: 16,
     },
     regular14: {
       color: "textColor",

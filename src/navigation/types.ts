@@ -15,7 +15,7 @@ export type RootStackParamList = {
   SignupScreen: undefined;
   ForgotPasswordScreen: undefined;
   VerifyOtp: undefined;
-  // EditItem: { item: StoreItemType };
+  SubscriptionScreen: { item: {} } | undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
