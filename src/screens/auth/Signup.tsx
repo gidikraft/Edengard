@@ -1,9 +1,9 @@
 import { Alert, SafeAreaView, StyleSheet, } from 'react-native';
 import React, { useState } from 'react';
 import { Box, Button, Pressable, PrimaryInput, Text } from '@/components/';
-import { palette } from '@/theme';
+import { palette } from '@/theme/';
 import { useForm } from 'react-hook-form';
-import auth from '@react-native-firebase/auth';
+import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { RootStackScreenProps } from '@/navigation/types';
 import Toast from 'react-native-toast-message';
 import database from '@react-native-firebase/database';
@@ -21,12 +21,13 @@ const Signup = ({ navigation }: RootStackScreenProps<"SignupScreen">) => {
 
   const dbReference = database();
 
-  const addToDb = (data: { email: string, name: string, password: string }) => {
-    const username = data.email.split("@")?.[0];
+  const addToDb = (data: { email: string, name: string, password: string }, userDetails: FirebaseAuthTypes.User) => {
+    const userUid = userDetails?.uid;
     //set to null to delete data or .remove()
-    dbReference.ref(`/User/${username}`).set({
-      userInfo: data.email,
-      name: data.name
+    dbReference.ref(`/User/${userUid}`).set({
+      name: data.name,
+      userEmail: data.email,
+      userUid: userUid
     })
     .then(() => console.log('User has been added to db.'));
   };
@@ -40,7 +41,7 @@ const Signup = ({ navigation }: RootStackScreenProps<"SignupScreen">) => {
         user.user?.updateProfile({
           displayName: data.name
         })
-        addToDb(data);
+        addToDb(data, user?.user);
         goToLogin();
 
         showToast();

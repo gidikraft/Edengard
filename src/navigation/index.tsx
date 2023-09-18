@@ -25,7 +25,6 @@ const RootNavigation = () => {
 
   // Handle user state changes
   const onAuthStateChanged = (userState: React.SetStateAction<FirebaseAuthTypes.User | null>) => {
-    // console.log(JSON.stringify(userState), 'user');
     setUser(userState);
     if (initializing) setInitializing(false);
   };
@@ -33,7 +32,7 @@ const RootNavigation = () => {
   React.useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
     return subscriber; // unsubscribe on unmount
-  }, []);
+  }, [user]);
 
   if (initializing) return null;
 
@@ -57,7 +56,7 @@ const RootNavigation = () => {
       }}
     >
       <Stack.Navigator>
-        {user ? (
+        {user?.emailVerified ? (
           <Stack.Group >
 
             <Stack.Screen

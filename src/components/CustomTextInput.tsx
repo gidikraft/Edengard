@@ -11,6 +11,8 @@ import {
 } from "react-native";
 import { Controller, Control } from "react-hook-form";
 import Text from "./Text";
+import Icon from "./Icons";
+import Pressable from "./Pressable";
 
 export enum inputtype {
   select = "select",
@@ -81,8 +83,8 @@ const CustomTextInput = ({
   textStyle,
   containerStyle
 }: Props) => {
-  // const { colors } = useContext(ThemeContext);
-  // const styleValues = useStyle({ style: ui });
+  const [showPassword, setShowPassword] = useState(true);
+
   const [borderColor, setBorderColor] = useState("rgba(205, 201, 201, 0.12)");
   const hitSlop = { top: 20, left: 5, bottom: 10, right: 5 };
   const labelHitSlop = { top: 25, left: 20, bottom: 20, right: 20 };
@@ -100,6 +102,8 @@ const CustomTextInput = ({
       onFocus();
     }
   };
+
+  const togglePassword = () => setShowPassword(prev => !prev);
 
   return (
     <View
@@ -139,9 +143,11 @@ const CustomTextInput = ({
               style={{
                 ...styles(editable).inputArea,
                 ...containerStyle,
+                borderWidth: 1,
+                borderColor,
               }}>
               <RTextInput
-                secureTextEntry={secureTextEntry}
+                secureTextEntry={secureTextEntry && showPassword}
                 autoFocus={autoFocus}
                 defaultValue={defaultValue}
                 editable={editable}
@@ -149,7 +155,6 @@ const CustomTextInput = ({
                 style={{
                   ...styles(editable).input,
                   ...inputStyle,
-                  borderColor,
                   ...textStyle,
                 }}
                 placeholder={placeholder}
@@ -162,7 +167,6 @@ const CustomTextInput = ({
                 multiline={multiline}
                 textAlignVertical={multiline ? "top" : "auto"}
                 numberOfLines={numberOfLines}
-                // cursorColor={colors.black}
                 onSubmitEditing={() => submitfunc?.()}
                 hitSlop={hitSlop}
                 onPressIn={onPress}
@@ -171,7 +175,8 @@ const CustomTextInput = ({
                 <TouchableOpacity
                   hitSlop={hitSlop}
                   style={{ marginRight: 4 }}
-                  onPress={onPress}>
+                  onPress={onPress}
+                >
                   {/* <Entypo
                     name="chevron-small-down"
                     size={24}
@@ -187,6 +192,11 @@ const CustomTextInput = ({
                   {/* <LockIcon /> */}
                 </TouchableOpacity>
               ) : null}
+              {secureTextEntry &&
+                <Pressable marginRight='sml' onPress={togglePassword}>
+                  <Icon name={!showPassword ? "secured" : 'unsecured'} />
+                </Pressable>
+              }
             </View>
           </View>
         )}

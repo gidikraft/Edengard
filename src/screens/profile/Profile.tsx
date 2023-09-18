@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import auth from '@react-native-firebase/auth';
 import { logout } from '@/store/authSlice';
 import { RootState } from '@/store/Store';
-import { LogoutModal } from '@/components/Modals';
+import { LogoutModal } from '../../components/Modals/';
 
 const Profile = () => {
   const [showLogoutModal, setShowLogoutModal] = useState(false);

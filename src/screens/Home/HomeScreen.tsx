@@ -10,12 +10,6 @@ import { useAppDispatch } from '@/hooks/';
 import { useAppSelector } from '@/hooks/';
 import { useGetNotificationsQuery, useGetUsersQuery } from '../../api/services';
 
-type TThings = {
-  title: string;
-  id: number;
-  background: PaletteType
-};
-
 const things = [
   { title: 'Health', background: 'blueBackground', icon: "health", id: 1 },
   { title: 'Sport', background: 'buttonGreen', icon: "sports", id: 2 },
@@ -51,9 +45,9 @@ const HomeScreen = ({ navigation }: RootTabScreenProps<"HomeScreen">) => {
   };
 
   useEffect(() => {
-    const username = firebaseAuth?.currentUser?.email.split("@")?.[0];
+    const userUid = firebaseAuth?.currentUser?.uid;
     const reference = dbReference
-      .ref(`/User/${username}`)
+      .ref(`/User/${userUid}`)
       .on('value', snapshot => {
         console.log('User data: ', snapshot.val());
         dispatch(setUser(snapshot.val()));
@@ -63,13 +57,7 @@ const HomeScreen = ({ navigation }: RootTabScreenProps<"HomeScreen">) => {
     return () => dbReference.ref('/User').off('child_added', reference);
   }, []);
 
-  const goToNotification = () => {
-    navigation.navigate("NotificationScreen");
-  };
-
-  const getUId = () => {
-    return Date.now() + (Math.random() * 100000).toFixed().toString();
-  };
+  const goToNotification = () => navigation.navigate("NotificationScreen");
 
   // useEffect(() => {
   //   const userAgeRef = dbReference.ref('/User/Health/age');
@@ -93,16 +81,8 @@ const HomeScreen = ({ navigation }: RootTabScreenProps<"HomeScreen">) => {
 
 
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        backgroundColor: palette.background,
-      }}
-    >
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        style={{ flex: 1 }}
-      >
+    <SafeAreaView style={styles.maincontainer} >
+      <ScrollView  showsVerticalScrollIndicator={false} style={{ flex: 1 }} >
         <Box paddingHorizontal='md' flex={1}>
           <Box flexDirection="row" justifyContent="space-between" marginTop="xl" width='100%' >
             <Box width='90%'>
@@ -200,4 +180,9 @@ const EventsItem = ({
 
 export default HomeScreen;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  maincontainer: {
+    flex: 1,
+    backgroundColor: palette.background,
+  },
+});

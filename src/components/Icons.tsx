@@ -14,11 +14,13 @@ import link from "@/assets/svg/up_claret.svg";
 import news from "@/assets/svg/news.svg";
 import profilePic from "@/assets/svg/profile_pic.svg";
 import search from "@/assets/svg/search.svg";
+import secured from "@/assets/svg/secured.svg";
 import settings from "@/assets/svg/settings.svg";
 import sports from "@/assets/svg/sports.svg";
 import transfer from "@/assets/svg/transfer_tab_active.svg";
 import transferInactive from "@/assets/svg/transfer_tab_inactive.svg";
 import trash from "@/assets/svg/trash.svg";
+import unsecured from "@/assets/svg/unsecured.svg";
 import user from "@/assets/svg/user.svg";
 import userInactive from "@/assets/svg/user_inactive.svg";
 
@@ -37,11 +39,13 @@ export const ICONS = {
     news,
     "profile_pic": profilePic,
     search,
+    secured,
     settings,
     sports,
     transfer,
     "transfer-inactive": transferInactive,
     trash,
+    unsecured,
     user,
     "user-inactive": userInactive,
 };

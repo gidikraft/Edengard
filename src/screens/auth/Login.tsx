@@ -6,6 +6,7 @@ import { login } from '../../store/authSlice';
 import { Box, Button, Pressable, PrimaryInput, Text } from '@/components/';
 import auth from '@react-native-firebase/auth';
 import { RootStackScreenProps } from '@/navigation/types';
+import { useAppDispatch } from '@/hooks/';
 // import Icon from 'react-native-vector-icons/Ionicons';
 
 
@@ -13,7 +14,7 @@ const Login = ({ navigation }: RootStackScreenProps<"LoginScreen">) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const firebaseAuth = auth();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   // const { t } = useTranslation();
 
   const firbaseSignIn = (data: { email: string, password: string }) => {
@@ -23,7 +24,7 @@ const Login = ({ navigation }: RootStackScreenProps<"LoginScreen">) => {
       .then((user) => {
         if (user.user?.emailVerified) {
           console.log(JSON.stringify(user), 'Successfully signed in!');
-          dispatch(login());
+          // dispatch(login());
         } else {
           Alert.alert("Email not verified", "Please verify your email by clicking the link sent to your mail");
         }
