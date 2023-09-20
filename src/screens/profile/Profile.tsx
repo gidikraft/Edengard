@@ -1,17 +1,19 @@
-import { Dimensions, Modal, SafeAreaView, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 import React, { useState } from 'react';
-import { Box, Button, CenterModal, Icon, Pressable, PrimaryButton, Text } from '@/components/';
+import { Box, Button, Icon, Pressable, Text } from '@/components/';
 import { palette } from '@/theme/';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import auth from '@react-native-firebase/auth';
-import { logout } from '@/store/authSlice';
 import { RootState } from '@/store/Store';
 import { LogoutModal } from '../../components/Modals/';
 import { RootTabScreenProps } from '@/navigation/types';
+import { useToast } from '@/hooks/useToast';
 
 const Profile = ({navigation}: RootTabScreenProps<"ProfileSCreen">) => {
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const firebaseAuth = auth();
+  const toast = useToast();
+
   // const dispatch = useDispatch();
   const { userData } = useSelector((state: RootState) => state.auth);
 
@@ -52,17 +54,20 @@ const Profile = ({navigation}: RootTabScreenProps<"ProfileSCreen">) => {
           <Box marginTop='xl'>
             <ProfileItem
               title='My bookings'
+              itemPress={() => toast.success({message: 'Hello world'})}
             />
             <Box borderBottomWidth={1} borderColor="border" marginBottom="md" />
 
             <ProfileItem
               title='My messages'
+              itemPress={() => toast.error({message: 'Hello world'})}
             />
 
             <Text variant='bold18' marginTop='xl' marginBottom='md'>Support</Text>
 
             <ProfileItem
               title='Help center'
+              itemPress={() => toast.info({message: 'Hello world'})}
             />
 
             <Box borderBottomWidth={1} borderColor="border" marginBottom="md" />

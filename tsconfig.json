@@ -30,6 +30,9 @@
       "@/constants": [
         "./src/constants/*"
       ],
+      "@/config": [
+        "./src/config/*"
+      ],
       "@/hooks": [
         "./src/hooks/*"
       ],

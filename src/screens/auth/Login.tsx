@@ -46,6 +46,14 @@ const Login = ({ navigation }: RootStackScreenProps<"LoginScreen">) => {
           });
         }
 
+        if (error.code === 'auth/wrong-password') {
+          console.log('That password is invalid!');
+          setError("password", {
+            type: "validate",
+            message: 'The password is invalid!',
+          });
+        }
+
         console.error(error, 'firebase signin error');
         setError("email", {
           type: "validate",
@@ -122,7 +130,7 @@ const Login = ({ navigation }: RootStackScreenProps<"LoginScreen">) => {
                 message: 'Password must be 6 or more',
               },
               pattern: {
-                value: /^[a-zA-Z ]*$/,
+                value: /^[a-zA-Z0-9]*$/,
                 message: "Please enter a valid password",
               },
             }}

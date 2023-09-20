@@ -1,22 +1,36 @@
 import { SafeAreaView, StyleSheet, } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { palette } from '@/theme';
+import { palette } from '@/theme/';
 import { Box, Button, Icon, Pressable, PrimaryInput, Text } from '@/components/';
 import { RootStackScreenProps } from '@/navigation/types';
 import { useForm } from 'react-hook-form';
-// import Button from '@/components/Button';
+import auth from '@react-native-firebase/auth';
+import { useToast } from '@/hooks/useToast';
 
 const ForgotPassword = ({ navigation }: RootStackScreenProps<'ForgotPasswordScreen'>) => {
   const [isLoading, setIsLoading] = useState(false);
   const [seconds, setSeconds] = useState(30);
 
+  const firebaseAuth = auth();
+  const toast = useToast();
+
   const resetPassword = (data: { email: string }) => {
     setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-      setSeconds(30);
-      console.log(data)
-    }, 1000);
+    firebaseAuth.sendPasswordResetEmail(data.email)
+      .then(res => {
+        toast.success({message: 'Check your email for passwrod reset link'});
+        setTimeout(() => {
+          navigation.goBack();
+        }, 300);
+        console.log(res, 'res');
+      })
+      .catch(error => {
+        console.log(error, 'firebase error');
+      }).finally(() => {
+        setIsLoading(false);
+      })
+
+      //   setSeconds(30);
   };
 
   const {
@@ -84,7 +98,7 @@ const ForgotPassword = ({ navigation }: RootStackScreenProps<'ForgotPasswordScre
             />
           </Box>
 
-          <Box flexDirection='row' justifyContent='center'marginTop="md">
+          <Box flexDirection='row' justifyContent='center' marginTop="md">
             <Text variant="regular14" >Tap to resend code in</Text>
             <Pressable onPress={() => console.log('first')} type='scale'>
               <Text variant="medium14" marginLeft='xs'>{displayTimer()}</Text>

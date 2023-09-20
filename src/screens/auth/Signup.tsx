@@ -5,19 +5,12 @@ import { palette } from '@/theme/';
 import { useForm } from 'react-hook-form';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { RootStackScreenProps } from '@/navigation/types';
-import Toast from 'react-native-toast-message';
 import database from '@react-native-firebase/database';
+import { useToast } from '@/hooks/useToast';
 
 const Signup = ({ navigation }: RootStackScreenProps<"SignupScreen">) => {
   const [isLoading, setIsLoading] = useState(false);
-
-  const showToast = () => {
-    Toast.show({
-      type: 'success',
-      text1: 'Hello',
-      text2: 'Check your email for verification link 👋'
-    });
-  };
+  const toast = useToast();
 
   const dbReference = database();
 
@@ -48,8 +41,7 @@ const Signup = ({ navigation }: RootStackScreenProps<"SignupScreen">) => {
         addToDb(data, user?.user);
         goToLogin();
 
-        showToast();
-        Alert.alert("Success", "Check verification link sent to your email");
+        toast.success({message: 'Check your email for verification link 👋', length: 5000});
         console.log(JSON.stringify(user), 'User account created & signed in!');
       })
       .catch(error => {
@@ -66,6 +58,14 @@ const Signup = ({ navigation }: RootStackScreenProps<"SignupScreen">) => {
           setError("email", {
             type: "validate",
             message: 'That email address is invalid!',
+          })
+          return false;
+        }
+        if (error.code === 'auth/weak-password') {
+          console.log('That email address is invalid!');
+          setError("password", {
+            type: "validate",
+            message: 'The given password is invalid.!',
           })
           return false;
         }
@@ -185,7 +185,7 @@ const Signup = ({ navigation }: RootStackScreenProps<"SignupScreen">) => {
                 message: 'Length must be 3 or more',
               },
               pattern: {
-                value: /^[a-zA-Z ]*$/,
+                value: /^[a-zA-Z0-9]*$/,
                 message: "Password must be alphabets only",
               },
             }}
