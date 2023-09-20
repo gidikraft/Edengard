@@ -8,8 +8,9 @@ import { RootState } from '@/store/Store';
 import { LogoutModal } from '../../components/Modals/';
 import { RootTabScreenProps } from '@/navigation/types';
 import { useToast } from '@/hooks/useToast';
+import IIcon from 'react-native-vector-icons/Ionicons';
 
-const Profile = ({navigation}: RootTabScreenProps<"ProfileSCreen">) => {
+const Profile = ({ navigation }: RootTabScreenProps<"ProfileSCreen">) => {
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const firebaseAuth = auth();
   const toast = useToast();
@@ -31,69 +32,121 @@ const Profile = ({navigation}: RootTabScreenProps<"ProfileSCreen">) => {
 
   return (
     <SafeAreaView style={styles.maincontainer}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <Box flex={1} paddingHorizontal='md' >
-          <Text variant="bold24" marginTop='xl'>Account</Text>
+      <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1, paddingHorizontal: 16 }} contentContainerStyle={{ paddingBottom: 30 }}>
+        <Text variant="bold20" marginTop='xl'>Profile</Text>
 
-          <Box flexDirection='row' alignItems='center' marginTop='xxl'>
-            <Icon name='profile_pic' size={50} />
-            <Box marginLeft='sml' >
-              <Text variant='medium18' textTransform='capitalize'>{`${userData?.firstName} ${userData?.lastName}`}</Text>
-              <Text variant='regular14' color='secondary'>0 contributions</Text>
+        <Box
+          padding="sl"
+          marginTop="lg"
+          backgroundColor="contactColor"
+          borderRadius={4}
+          flexDirection='row'
+          alignItems='center'
+          justifyContent='space-between'
+          style={{
+            shadowColor: 'rgba(0,0,0,0.2',
+            elevation: 4,
+            shadowOffset: {
+              width: 0,
+              height: 1
+            },
+            shadowOpacity: 0.22,
+            shadowRadius: 2.22
+          }}
+        >
+          <Box flexDirection='row' alignItems='center'>
+            <Icon name='profile-photo' size={50} />
+            <Box paddingHorizontal='sm'>
+              <Text variant="bold14" color="white">Profile</Text>
+              <Text variant="regular12" color="white" textTransform='capitalize'>{`${userData?.firstName} ${userData?.lastName}`}</Text>
             </Box>
           </Box>
 
-          <Button
-            label='View full profile'
-            borderRadius={60}
-            marginTop='xxl'
-            variant='white'
-            height={48}
+          <Pressable type='scale'>
+            <IIcon name="pencil-outline" size={20} color={palette.white} />
+          </Pressable>
+        </Box>
+
+        <Box
+          backgroundColor="white"
+          marginTop="lg"
+          padding='md'
+          style={{
+            shadowColor: 'rgba(0,0,0,0.2',
+            elevation: 4,
+            shadowOffset: {
+              width: 0,
+              height: 1
+            },
+            shadowOpacity: 0.22,
+            shadowRadius: 2.22
+          }}
+        >
+          <ProfileItem
+            title='My Account '
+            description='Make changes to your account'
+            iconName='person-outline'
+            itemPress={() => navigation.navigate("AccountDetails")}
           />
 
-          <Box marginTop='xl'>
-            <ProfileItem
-              title='My bookings'
-              itemPress={() => toast.success({message: 'Hello world'})}
-            />
-            <Box borderBottomWidth={1} borderColor="border" marginBottom="md" />
+          <ProfileItem
+            title='Saved Beneficiary'
+            description='Manage your saved account'
+            iconName='people-outline'
+            itemPress={() => toast.success({ message: 'Hello world' })}
+          />
 
-            <ProfileItem
-              title='My messages'
-              itemPress={() => toast.error({message: 'Hello world'})}
-            />
+          <ProfileItem
+            title='Face ID / Touch ID'
+            description='Manage your device security'
+            iconName='lock-closed-outline'
+            itemPress={() => toast.success({ message: 'Hello world' })}
+          />
 
-            <Text variant='bold18' marginTop='xl' marginBottom='md'>Support</Text>
+          <ProfileItem
+            title='Two-Factor Authentication'
+            description='Further secure your account for safety'
+            iconName='shield-checkmark-outline'
+            itemPress={() => toast.error({ message: 'Hello world' })}
+          />
 
-            <ProfileItem
-              title='Help center'
-              itemPress={() => toast.info({message: 'Hello world'})}
-            />
+          <ProfileItem
+            title='Log out'
+            description='Close all running sessions'
+            iconName='exit-outline'
+            itemPress={toggleLogoutModal}
+            logout
+          />
+        </Box>
 
-            <Box borderBottomWidth={1} borderColor="border" marginBottom="md" />
+        <Text variant="medium14" color="secondary" marginTop='lg'>More</Text>
 
-            <ProfileItem
-              title='App feedback'
-            />
+        <Box
+          backgroundColor="white"
+          marginTop="lg"
+          padding='md'
+          style={{
+            shadowColor: 'rgba(0,0,0,0.2',
+            elevation: 4,
+            shadowOffset: {
+              width: 0,
+              height: 1
+            },
+            shadowOpacity: 0.22,
+            shadowRadius: 2.22
+          }}
+        >
+          <ProfileItem
+            title='Help & Support'
+            iconName='notifications-outline'
+            itemPress={() => toast.success({ message: 'Hello world' })}
+          />
 
-            <Text variant='bold18' marginTop='xl' marginBottom='md'>Preferences</Text>
-
-            <ProfileItem
-              title='Language (English, UK)'
-            />
-
-            <ProfileItem
-              title='Notification'
-              itemPress={goToNotification}
-            />
-
-            <ProfileItem
-              logout
-              title='Logout'
-              itemPress={toggleLogoutModal}
-            />
-
-          </Box>
+          <ProfileItem
+            title='About App'
+            iconName='heart-outline'
+            itemPress={() => toast.success({ message: 'Hello world' })}
+          />
         </Box>
       </ScrollView>
       <LogoutModal
@@ -108,28 +161,40 @@ const Profile = ({navigation}: RootTabScreenProps<"ProfileSCreen">) => {
 export default Profile;
 
 type ProfileItemProps = {
-  title: string;
+  description?: string;
+  logout?: boolean;
+  iconName: string;
   itemPress?: () => void;
-  logout?: boolean
+  title: string;
 }
 
-const ProfileItem = ({ logout, title, itemPress }: ProfileItemProps) => {
+const ProfileItem = ({ logout, title, itemPress, description, iconName }: ProfileItemProps) => {
   return (
     <Pressable
       flexDirection='row'
       justifyContent='space-between'
-      marginBottom='md'
+      marginVertical='md'
       alignItems='center'
       height={34}
       onPress={itemPress}
       type='scale'
     >
-      <Text variant='regular16' color={logout ? 'error' : 'textColor'}>{title}</Text>
+      <Box flexDirection='row' alignItems='center'>
+        <Box height={40} width={40} justifyContent='center' alignItems='center' backgroundColor={logout ? "redBackground" : "background"} borderRadius={20}>
+          <IIcon name={iconName} size={20} color={logout ? palette.error : palette.contactColor} />
+        </Box>
+        <Box paddingLeft='ssm'>
+          <Text variant='medium14' color={logout ? 'error' : 'textColor'}>{title}</Text>
+          {description &&
+            <Text variant='regular12' color={logout ? 'textRed' : 'secondaryText'}>{description}</Text>
+          }
+        </Box>
+      </Box>
 
-      <Icon name='link' size={15} />
+      <IIcon name="chevron-forward-outline" size={20} color={palette.secondary} />
     </Pressable>
   )
-}
+};
 
 const styles = StyleSheet.create({
   maincontainer: {

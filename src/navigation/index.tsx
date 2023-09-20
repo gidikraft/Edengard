@@ -11,6 +11,7 @@ import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import analytics from '@react-native-firebase/analytics';
 import { NotificationScreen } from "@/screens/Home";
 import { SubscriptionScreen } from "@/screens/events";
+import { AccountDetailsScreen } from "@/screens/profile";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -36,7 +37,7 @@ const RootNavigation = () => {
       if (fbUser) {
         // User is signed in or token was refreshed.
         setUser(fbUser);
-        console.log(user, fbUser, 'user state changed');
+        // console.log(user, fbUser, 'user state changed');
       }
     })
     const subscriber = firebaseAuth.onAuthStateChanged(onAuthStateChanged);
@@ -83,6 +84,12 @@ const RootNavigation = () => {
             <Stack.Screen
               name="SubscriptionScreen"
               component={SubscriptionScreen}
+              options={{ headerShown: false }}
+            />
+
+            <Stack.Screen
+              name="AccountDetails"
+              component={AccountDetailsScreen}
               options={{ headerShown: false }}
             />
           </Stack.Group>

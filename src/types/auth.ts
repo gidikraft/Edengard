@@ -23,6 +23,6 @@ export type FUser = {
 	balance: number;
   firstName: string;
   lastName: string;
-  userInfo: string;
+  userEmail: string;
 	accessToken: string | null;
 };

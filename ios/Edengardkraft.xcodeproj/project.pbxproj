@@ -37,6 +37,7 @@
 		D72821396E4D4D2BBE69CE92 /* Poppins-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3FB416DA1F04429D806AC210 /* Poppins-BlackItalic.ttf */; };
 		D9B5EAA807474A478A22AF1C /* Poppins-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FF170E461051431594EF80FE /* Poppins-ExtraLight.ttf */; };
 		DF28A15C9FAE97886C86A1D3 /* Pods_Edengardkraft_EdengardkraftTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8FF333D7DB442ED12F5B62CC /* Pods_Edengardkraft_EdengardkraftTests.framework */; };
+		E1C5733E2ABB406A00F7B794 /* fonts in Resources */ = {isa = PBXBuildFile; fileRef = E1C5733D2ABB406900F7B794 /* fonts */; };
 		E1E8FE182AAD18FF00CED95B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E1E8FE172AAD18FE00CED95B /* GoogleService-Info.plist */; };
 		EAA71FEAC9464B8980E2B341 /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AFDEE90FFFC7431D8E3B2C4F /* Poppins-Regular.ttf */; };
 		EFB2EC528EBF4E05991C58B7 /* Poppins-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ADF1C0C89DCC4C76B2C60043 /* Poppins-Black.ttf */; };
@@ -94,6 +95,7 @@
 		D869B212ED6F46FD811BFE7D /* BlackMango-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "BlackMango-SemiBold.ttf"; path = "../src/assets/fonts/BlackMango-SemiBold.ttf"; sourceTree = "<group>"; };
 		DFC66911A2354AF6BC6B0976 /* Poppins-ThinItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ThinItalic.ttf"; path = "../src/assets/fonts/Poppins-ThinItalic.ttf"; sourceTree = "<group>"; };
 		E1282868BF3E41CA8A072050 /* BlackMango-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "BlackMango-Black.ttf"; path = "../src/assets/fonts/BlackMango-Black.ttf"; sourceTree = "<group>"; };
+		E1C5733D2ABB406900F7B794 /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fonts; sourceTree = "<group>"; };
 		E1E8FE172AAD18FE00CED95B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		E48EDC3F0D3143FEA4B0C651 /* BlackMango-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "BlackMango-ExtraLight.ttf"; path = "../src/assets/fonts/BlackMango-ExtraLight.ttf"; sourceTree = "<group>"; };
 		E51C999E135D4E1CBA6DE135 /* Poppins-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-SemiBold.ttf"; path = "../src/assets/fonts/Poppins-SemiBold.ttf"; sourceTree = "<group>"; };
@@ -206,6 +208,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				E1C5733D2ABB406900F7B794 /* fonts */,
 				E1E8FE172AAD18FE00CED95B /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* Edengardkraft */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -343,6 +346,7 @@
 				D5E3280B3FFC493D83ED7781 /* BlackMango-ExtraBold.ttf in Resources */,
 				A730B91EAB7D4EB091A0FF07 /* BlackMango-ExtraLight.ttf in Resources */,
 				40D761F9C66F48B8B992469E /* BlackMango-Light.ttf in Resources */,
+				E1C5733E2ABB406A00F7B794 /* fonts in Resources */,
 				90B148C3FA4844E99A12533B /* BlackMango-Medium.ttf in Resources */,
 				B6256B11ADD34DEC9BAE75B4 /* BlackMango-Regular.ttf in Resources */,
 				9DA2E77C7B9E4631BED56FFE /* BlackMango-SemiBold.ttf in Resources */,

@@ -14,6 +14,7 @@ import incoming from "@/assets/svg/incoming.svg";
 import link from "@/assets/svg/up_claret.svg";
 import news from "@/assets/svg/news.svg";
 import profilePic from "@/assets/svg/profile_pic.svg";
+import profilePhoto from "@/assets/svg/profile-photo.svg";
 import search from "@/assets/svg/search.svg";
 import secured from "@/assets/svg/secured.svg";
 import settings from "@/assets/svg/settings.svg";
@@ -40,6 +41,7 @@ export const ICONS = {
     link,
     news,
     "profile_pic": profilePic,
+    "profile-photo": profilePhoto,
     search,
     secured,
     settings,

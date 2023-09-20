@@ -8,6 +8,7 @@ import Bottomsheet from '../../components/Bottomsheet';
 import { NotificationDetails } from '../../components/Modals';
 import { NotificationItem, NotificationResponse } from '@/types/';
 import { formatEllipseText } from '@/utils/';
+import IIcon from 'react-native-vector-icons/Ionicons';
 
 const Notifications = ({ navigation }: RootStackScreenProps<"NotificationScreen">) => {
   const [showDetails, setShowDetails] = useState(false);
@@ -31,9 +32,9 @@ const Notifications = ({ navigation }: RootStackScreenProps<"NotificationScreen"
       <Box flex={1} backgroundColor="background" paddingHorizontal='sm' >
         <Box flexDirection='row' alignItems="center" marginTop="md">
           <Pressable onPress={() => navigation.goBack()} type='scale'>
-            <Icon name='arrow_back' size={16} />
+            <IIcon name="chevron-back-outline" size={16} color={palette.black} />
           </Pressable>
-          <Text variant="medium24" marginLeft='md'>Notification</Text>
+          <Text variant="bold20" marginLeft='md'>Notification</Text>
         </Box>
 
         <Box marginTop='lg'>
@@ -109,20 +110,17 @@ const NotificationFile = ({ body, title, itemPress }: NotificationItemProp) => {
       }}
       onPress={itemPress}
     >
-      <Box width={'18%'} height={54} borderRadius={8} backgroundColor='border' />
-
-      <Box flexDirection='row' alignItems='center' justifyContent='space-between' width={'85%'} paddingLeft='sml'>
-        <Box width={'90%'}>
+      <Box flexDirection='row' alignItems='center' width={'100%'}>
+        <IIcon name="chatbox-ellipses-outline" size={30} color={palette.black} />
+        <Box marginLeft='ssm'>
           <Text variant="medium12" >{title}</Text>
           <Text variant="regular10" marginTop='xs'>{formatEllipseText(body, 40)}</Text>
         </Box>
-
-        <Icon name='trash' />
       </Box>
     </Pressable>
 
   )
-}
+};
 
 export default Notifications;
 

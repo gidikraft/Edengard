@@ -15,6 +15,7 @@ export type RootStackParamList = {
   NotificationScreen: undefined;
   SignupScreen: undefined;
   ForgotPasswordScreen: undefined;
+  AccountDetails: undefined;
   VerifyOtp: undefined;
   SubscriptionScreen: { eventItem: TEvent } | undefined;
 };

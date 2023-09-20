@@ -4,6 +4,8 @@ import Bottomsheet from '../Bottomsheet';
 import Box from '../Box';
 import Text from '../Text';
 import Icon from '../Icons';
+import IIcon from 'react-native-vector-icons/Ionicons';
+import { palette } from '@/theme/';
 
 type ModalProps = {
   showModal: boolean;
@@ -36,8 +38,7 @@ const NotificationDetails = ({
         <Text color="textColor" variant="medium16" marginTop='sm'>{title}</Text>
 
         <Text marginTop="lg" color="textColor">{body}</Text>
-
-        <Icon name='incoming' style={{ alignSelf: 'flex-end', marginTop: 16, }} />
+        <IIcon name="bulb-outline" size={30} color={palette.black} style={{ alignSelf: 'flex-end', marginTop: 16}}/>
       </Box>
     </Bottomsheet>
   )

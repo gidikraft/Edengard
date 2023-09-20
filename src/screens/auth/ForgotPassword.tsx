@@ -71,7 +71,7 @@ const ForgotPassword = ({ navigation }: RootStackScreenProps<'ForgotPasswordScre
           <Pressable onPress={() => navigation.goBack()} type='scale'>
             <Icon name='arrow_back' size={16} />
           </Pressable>
-          {/* <Text variant="bold22" marginLeft='md'>Forgot Password</Text> */}
+          <Text variant="medium20" marginLeft='md'>Forgot Password</Text>
         </Box>
 
         <Box flex={1} justifyContent='center'>
@@ -101,14 +101,15 @@ const ForgotPassword = ({ navigation }: RootStackScreenProps<'ForgotPasswordScre
           <Box flexDirection='row' justifyContent='center' marginTop="md">
             <Text variant="regular14" >Tap to resend code in</Text>
             <Pressable onPress={() => console.log('first')} type='scale'>
-              <Text variant="medium14" marginLeft='xs'>{displayTimer()}</Text>
+              <Text variant="medium14" marginLeft='xs' color='textBlue'>{displayTimer()}</Text>
             </Pressable>
           </Box>
 
           <Button
             label='Login'
             onPress={handleSubmit(resetPassword)}
-            backgroundColor="primary"
+            backgroundColor="contactColor"
+            labelProps={{ color: 'white' }}
             variant='white'
             marginTop='xl'
             isloading={isLoading}

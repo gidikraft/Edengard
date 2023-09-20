@@ -197,7 +197,8 @@ const Signup = ({ navigation }: RootStackScreenProps<"SignupScreen">) => {
         <Button
           label='Create account'
           onPress={handleSubmit(firbaseSignup)}
-          backgroundColor="gradientBlue"
+          backgroundColor="contactColor"
+          labelProps={{ color: 'white' }}
           variant='textColor'
           marginTop='xl'
           isloading={isLoading}
@@ -206,7 +207,7 @@ const Signup = ({ navigation }: RootStackScreenProps<"SignupScreen">) => {
         <Box flexDirection='row' justifyContent='center' marginTop='sm'>
           <Text >Already have an account?</Text>
           <Pressable type='scale' onPress={goToLogin} >
-            <Text marginLeft='xs' color='gradientBlue'>Login instead</Text>
+            <Text marginLeft='xs' color='textBlue'>Login instead</Text>
           </Pressable>
         </Box>
 

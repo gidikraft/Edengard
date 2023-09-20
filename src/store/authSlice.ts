@@ -12,7 +12,7 @@ const initialUserData = {
   balance: 0,
 	firstName: "",
 	lastName: "",
-	userInfo: "",
+	userEmail: "",
 };
 
 const initialState: initialAppState = {

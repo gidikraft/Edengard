@@ -1,5 +1,5 @@
 import { Alert, StyleSheet, } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { login } from '../../store/authSlice';
@@ -7,6 +7,7 @@ import { Box, Button, Pressable, PrimaryInput, Text } from '@/components/';
 import auth from '@react-native-firebase/auth';
 import { RootStackScreenProps } from '@/navigation/types';
 import { useAppDispatch } from '@/hooks/';
+import { getFromLS, saveToLS } from '@/services/localStorage/storage';
 // import Icon from 'react-native-vector-icons/Ionicons';
 
 
@@ -24,6 +25,7 @@ const Login = ({ navigation }: RootStackScreenProps<"LoginScreen">) => {
       .then((user) => {
         if (user.user?.emailVerified) {
           console.log(JSON.stringify(user), 'Successfully signed in!');
+          saveToLS('@username', data.email);
           // dispatch(login());
         } else {
           Alert.alert("Email not verified", "Please verify your email by clicking the link sent to your mail");
@@ -86,7 +88,18 @@ const Login = ({ navigation }: RootStackScreenProps<"LoginScreen">) => {
       password: "",
     },
   });
-  
+
+  const getSecret = async () => {
+    const val = await getFromLS("@username");
+    if (val) {
+      setValue("email", val);
+    }
+  };
+
+  useEffect(() => {
+    getSecret();
+  }, []);
+
   return (
     <Box flex={1} backgroundColor='background' paddingHorizontal="md">
       <Box flex={1} justifyContent="center" >
@@ -109,6 +122,7 @@ const Login = ({ navigation }: RootStackScreenProps<"LoginScreen">) => {
                 message: "Please enter a valid email",
               },
             }}
+            keyboardType="email-address"
             errorMessage={errors.email?.message}
           />
         </Box>
@@ -139,13 +153,14 @@ const Login = ({ navigation }: RootStackScreenProps<"LoginScreen">) => {
           />
         </Box>
         <Pressable marginTop='md' onPress={goToResetPassword} type='scale'>
-          <Text textAlign='right' color='buttonGreen'>Forgot password?</Text>
+          <Text textAlign='right' color='textBlue'>Forgot password?</Text>
         </Pressable>
 
         <Button
           label='Login'
           onPress={handleSubmit(firbaseSignIn)}
-          backgroundColor="buttonGreen"
+          backgroundColor="contactColor"
+          labelProps={{ color: 'white' }}
           variant='textColor'
           marginTop='xl'
           isloading={isLoading}
@@ -154,7 +169,7 @@ const Login = ({ navigation }: RootStackScreenProps<"LoginScreen">) => {
         <Box flexDirection='row' justifyContent='center' marginTop='sm'>
           <Text >Don't have an account?</Text>
           <Pressable type='scale' onPress={goToSignup} >
-            <Text marginLeft='xs' color='buttonGreen'>Sign up</Text>
+            <Text marginLeft='xs' color='textBlue'>Sign up</Text>
           </Pressable>
         </Box>
       </Box>

@@ -10,7 +10,7 @@ import Box from "./Box";
 import Icon, { IconName } from "./Icons";
 import Pressable, { PressableProps } from "./Pressable";
 import Text, { TextProps } from "./Text";
-import { PaletteType, useTheme } from "@/theme";
+import { PaletteType, useTheme } from "@/theme/";
 
 const AnimatedBox = Animated.createAnimatedComponent(Box);
 
