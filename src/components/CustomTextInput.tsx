@@ -20,7 +20,7 @@ export enum inputtype {
   date = "date",
 }
 
-type Props = {
+type InputProps = {
   secureTextEntry?: boolean;
   autoFocus?: boolean;
   label?: string;
@@ -37,6 +37,7 @@ type Props = {
   numberOfLines?: number;
   submitfunc?: any;
   inputStyle?: TextStyle;
+  inputContainerStyle?: ViewStyle;
   labelStyle?: TextStyle;
   rightLabel?: string;
   rightIcon?: boolean;
@@ -61,7 +62,7 @@ const CustomTextInput = ({
   name,
   label,
   placeholder,
-  // ui,
+  inputContainerStyle,
   errorMessage,
   keyboardType = "default",
   multiline = false,
@@ -82,7 +83,7 @@ const CustomTextInput = ({
   onPress,
   textStyle,
   containerStyle
-}: Props) => {
+}: InputProps) => {
   const [showPassword, setShowPassword] = useState(true);
 
   const [borderColor, setBorderColor] = useState("rgba(205, 201, 201, 0.12)");
@@ -108,7 +109,7 @@ const CustomTextInput = ({
   return (
     <View
       style={{
-        // ...styleValues,
+        ...inputContainerStyle,
         // height: 45,
         width: "100%",
       }}>
@@ -124,7 +125,7 @@ const CustomTextInput = ({
                 justifyContent: "space-between",
               }}>
               {label &&
-                <Text variant="medium12" color='textColor'>
+                <Text variant="medium12" color='textColor' style={labelStyle}>
                   {label}
                 </Text>
               }

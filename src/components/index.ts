@@ -9,6 +9,7 @@ export { default as Icon } from "./Icons";
 export type { ImagePackType } from "./ImagePacks";
 export { imagePacks } from "./ImagePacks";
 export { default as CenterModal } from "./CenterModal";
+export { default as BottomModal} from "./Bottomsheet";
 export type { PressableProps } from "./Pressable";
 export { default as Pressable } from "./Pressable";
 export type { ButtonProps } from "./ThemedButton";

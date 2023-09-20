@@ -9,6 +9,7 @@ import { RootTabScreenProps } from '@/navigation/types';
 import { useAppDispatch } from '@/hooks/';
 import { useAppSelector } from '@/hooks/';
 import { useGetNotificationsQuery, useGetUsersQuery } from '../../api/services';
+import { getGreeting } from '@/utils/';
 
 const things = [
   { title: 'Health', background: 'blueBackground', icon: "health", id: 1 },
@@ -21,14 +22,15 @@ const HomeScreen = ({ navigation }: RootTabScreenProps<"HomeScreen">) => {
   const { userData } = useAppSelector((state) => state.auth);
 
   const { data, error, } = useGetNotificationsQuery('users');
-  // console.log(userData, error, 'favorites');
 
   const dbReference = database();
   const firebaseAuth = auth();
   const dispatch = useAppDispatch();
+  const userUid = firebaseAuth?.currentUser?.uid;
+  console.log(userData, 'firebaseAuth?.currentUser');
 
-  const updateDb = (name: string) => {
-    dbReference.ref(`/User/${name}`).update({
+  const updateDb = () => {
+    dbReference.ref(`/User/${userUid}`).update({
       age: 30,
     })
       .then(() => console.log('Data updated to db.'));
@@ -45,7 +47,6 @@ const HomeScreen = ({ navigation }: RootTabScreenProps<"HomeScreen">) => {
   };
 
   useEffect(() => {
-    const userUid = firebaseAuth?.currentUser?.uid;
     const reference = dbReference
       .ref(`/User/${userUid}`)
       .on('value', snapshot => {
@@ -82,11 +83,11 @@ const HomeScreen = ({ navigation }: RootTabScreenProps<"HomeScreen">) => {
 
   return (
     <SafeAreaView style={styles.maincontainer} >
-      <ScrollView  showsVerticalScrollIndicator={false} style={{ flex: 1 }} >
+      <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }} >
         <Box paddingHorizontal='md' flex={1}>
           <Box flexDirection="row" justifyContent="space-between" marginTop="xl" width='100%' >
             <Box width='90%'>
-              <Text variant="medium16" textTransform='capitalize' >Hi, {userData?.name}</Text>
+              <Text variant="medium16" textTransform='capitalize' >{getGreeting()}, {userData?.firstName}</Text>
             </Box>
             <Pressable type='scale' width='20%' onPress={goToNotification}>
               <Icon name='bell' />
@@ -94,15 +95,16 @@ const HomeScreen = ({ navigation }: RootTabScreenProps<"HomeScreen">) => {
           </Box>
 
           <Box marginTop='xl'>
-            <Text variant="regular24" >1,234.00</Text>
+            <Text variant="regular12" color='secondary'>Current balance:</Text>
+            <Text variant="regular24" marginTop="sms">{`₦${userData?.balance}.00`}</Text>
 
-            <Box marginTop="xs" flexDirection='row' alignItems='center'>
+            {/* <Box marginTop="xs" flexDirection='row' alignItems='center'>
               <Icon name='address_book' size={14} />
               <Text variant="medium16" marginLeft='xs'>NGN</Text>
-            </Box>
+            </Box> */}
           </Box>
 
-          <Text variant="regular14" marginTop='xl' color='secondary'>Here are some things you can do</Text>
+          <Text variant="regular14" marginTop='xl' color='secondary'>Here are some things you can do:</Text>
 
           <Box flexDirection='row' flexWrap='wrap' justifyContent='space-between'>
             {things.map((item) => {

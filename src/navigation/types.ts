@@ -1,6 +1,7 @@
 import { CompositeScreenProps, NavigatorScreenParams } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
+import { TEvent } from "@/types/";
 
 declare global {
   namespace ReactNavigation {
@@ -15,7 +16,7 @@ export type RootStackParamList = {
   SignupScreen: undefined;
   ForgotPasswordScreen: undefined;
   VerifyOtp: undefined;
-  SubscriptionScreen: { item: {} } | undefined;
+  SubscriptionScreen: { eventItem: TEvent } | undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =

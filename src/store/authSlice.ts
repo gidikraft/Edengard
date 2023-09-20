@@ -4,18 +4,20 @@ import { FUser, TUser } from '@/types/auth';
 
 interface initialAppState {
   isAuthenticated: boolean;
-  userData: FUser
+  userData: FUser;
 }
 
 const initialUserData = {
-	name: "",
+  accessToken: null,
+  balance: 0,
+	firstName: "",
+	lastName: "",
 	userInfo: "",
-  accessToken: null
 };
 
 const initialState: initialAppState = {
   isAuthenticated: false,
-  userData: initialUserData
+  userData: initialUserData,
 };
 
 export const authSlice = createSlice({

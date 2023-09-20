@@ -7,8 +7,9 @@ import auth from '@react-native-firebase/auth';
 import { logout } from '@/store/authSlice';
 import { RootState } from '@/store/Store';
 import { LogoutModal } from '../../components/Modals/';
+import { RootTabScreenProps } from '@/navigation/types';
 
-const Profile = () => {
+const Profile = ({navigation}: RootTabScreenProps<"ProfileSCreen">) => {
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const firebaseAuth = auth();
   // const dispatch = useDispatch();
@@ -22,9 +23,9 @@ const Profile = () => {
         console.log('User signed out!');
         // dispatch(logout());
       });
-
-    // await dbReference.goOnline();
   };
+
+  const goToNotification = () => navigation.navigate("NotificationScreen");
 
   return (
     <SafeAreaView style={styles.maincontainer}>
@@ -35,7 +36,7 @@ const Profile = () => {
           <Box flexDirection='row' alignItems='center' marginTop='xxl'>
             <Icon name='profile_pic' size={50} />
             <Box marginLeft='sml' >
-              <Text variant='medium18' textTransform='capitalize'>{userData?.name}</Text>
+              <Text variant='medium18' textTransform='capitalize'>{`${userData?.firstName} ${userData?.lastName}`}</Text>
               <Text variant='regular14' color='secondary'>0 contributions</Text>
             </Box>
           </Box>
@@ -78,6 +79,7 @@ const Profile = () => {
 
             <ProfileItem
               title='Notification'
+              itemPress={goToNotification}
             />
 
             <ProfileItem

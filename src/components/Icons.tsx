@@ -10,6 +10,7 @@ import events from "../assets/svg/events.svg";
 import health from "@/assets/svg/health.svg";
 import home from "@/assets/svg/home_tab.svg";
 import homeInactive from "@/assets/svg/home_tab_inactive.svg";
+import incoming from "@/assets/svg/incoming.svg";
 import link from "@/assets/svg/up_claret.svg";
 import news from "@/assets/svg/news.svg";
 import profilePic from "@/assets/svg/profile_pic.svg";
@@ -35,6 +36,7 @@ export const ICONS = {
     health,
     home,
     "home-inactive": homeInactive,
+    incoming,
     link,
     news,
     "profile_pic": profilePic,

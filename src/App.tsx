@@ -8,12 +8,16 @@ import { Provider } from 'react-redux';
 import { store } from './store/Store';
 import { requestUserPermission, NoficationListener } from './services/notification/Notification';
 import { Box, Icon, Text } from './components';
-
+import SplashScreen from 'react-native-splash-screen';
 
 function App(): JSX.Element {
   useEffect(() => {
     requestUserPermission()
     NoficationListener()
+  }, []);
+
+  useEffect(() => {
+    SplashScreen.hide();
   }, []);
 
   return (

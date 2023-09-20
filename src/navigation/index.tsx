@@ -1,5 +1,5 @@
-import * as React from "react";
-import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native";
+import React, { useEffect, useState } from "react";
+import { NavigationContainer, NavigationContainerRef, useNavigationContainerRef } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { RootStackParamList } from "./types";
 import BottomTabNavigator from "./BottomTabs";
@@ -17,11 +17,13 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 const RootNavigation = () => {
   const { isAuthenticated } = useSelector((state: RootState) => state.auth)
   // Set an initializing state whilst Firebase connects
-  const [initializing, setInitializing] = React.useState(true);
-  const [user, setUser] = React.useState<FirebaseAuthTypes.User | null>(null);
+  const [initializing, setInitializing] = useState(true);
+  const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
 
   const routeNameRef = React.useRef();
-  const navigationRef = React.useRef<NavigationContainerRef>();
+  const navigationRef = useNavigationContainerRef<RootStackParamList>();
+
+  const firebaseAuth = auth();
 
   // Handle user state changes
   const onAuthStateChanged = (userState: React.SetStateAction<FirebaseAuthTypes.User | null>) => {
@@ -29,10 +31,17 @@ const RootNavigation = () => {
     if (initializing) setInitializing(false);
   };
 
-  React.useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+  useEffect(() => {
+    firebaseAuth.onUserChanged(fbUser => {
+      if (fbUser) {
+        // User is signed in or token was refreshed.
+        setUser(fbUser);
+        console.log(user, fbUser, 'user state changed');
+      }
+    })
+    const subscriber = firebaseAuth.onAuthStateChanged(onAuthStateChanged);
     return subscriber; // unsubscribe on unmount
-  }, [user]);
+  }, [firebaseAuth.onUserChanged]);
 
   if (initializing) return null;
 

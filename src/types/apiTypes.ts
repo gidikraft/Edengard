@@ -1,6 +1,6 @@
-export type NotificationResponse = Notifications[];
+export type NotificationResponse = NotificationItem[];
 
-type Notifications = {
+export type NotificationItem = {
   body: string,
   id: number,
   title: string,

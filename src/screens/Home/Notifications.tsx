@@ -1,18 +1,34 @@
-import { FlatList, SafeAreaView, StyleSheet, } from 'react-native';
-import React from 'react';
+import { FlatList, RefreshControl, SafeAreaView, StyleSheet, } from 'react-native';
+import React, { useState } from 'react';
 import { Box, Icon, Pressable, Text } from '@/components/';
 import { RootStackScreenProps } from '@/navigation/types';
 import { palette } from '@/theme/';
 import { useGetNotificationsQuery } from '../../api/services';
+import Bottomsheet from '../../components/Bottomsheet';
+import { NotificationDetails } from '../../components/Modals';
+import { NotificationItem, NotificationResponse } from '@/types/';
+import { formatEllipseText } from '@/utils/';
 
 const Notifications = ({ navigation }: RootStackScreenProps<"NotificationScreen">) => {
+  const [showDetails, setShowDetails] = useState(false);
+  const [activeIndex, setActiveIndex] = useState<NotificationItem>();
+  const [refreshing, setRefreshing] = React.useState(false);
 
   const { data, isLoading } = useGetNotificationsQuery('posts');
   // console.log(data, isLoading, 'data');
 
+  const toggleDetails = () => setShowDetails(prev => !prev);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
+
   return (
-    <Box flex={1} backgroundColor='background'>
-      <Box flex={1} backgroundColor="background" paddingHorizontal='sm' marginTop="xl">
+    <SafeAreaView style={styles.maincontainer} >
+      <Box flex={1} backgroundColor="background" paddingHorizontal='sm' >
         <Box flexDirection='row' alignItems="center" marginTop="md">
           <Pressable onPress={() => navigation.goBack()} type='scale'>
             <Icon name='arrow_back' size={16} />
@@ -28,47 +44,85 @@ const Notifications = ({ navigation }: RootStackScreenProps<"NotificationScreen"
             renderItem={({ item }) => {
               const { body, id, title, userId } = item;
               return (
-                <Box
-                  paddingVertical='ssm'
-                  paddingHorizontal='sl'
-                  backgroundColor='blueHighlight'
-                  flexDirection='row'
-                  borderRadius={8}
-                  width={'100%'}
-                  marginBottom='ssm'
-                  alignItems='center'
-                  style={{
-                    shadowColor: 'rgba(0,0,0,0.2',
-                    elevation: 4,
-                    shadowOffset: {
-                      width: 0,
-                      height: 1
-                    },
-                    shadowOpacity: 0.22,
-                    shadowRadius: 2.22
+                <NotificationFile
+                  body={body}
+                  title={title}
+                  itemPress={() => {
+                    toggleDetails();
+                    setActiveIndex(item);
+                    console.log(item, 'item')
                   }}
-                >
-                  <Box width={'18%'} height={54} borderRadius={8} backgroundColor='border' />
-
-                  <Box paddingHorizontal='md' flexDirection='row' alignItems='center' justifyContent='space-between' width={'82%'} >
-                    <Box  >
-                      <Text variant="medium12" >{title}</Text>
-                      <Text variant="regular10" marginTop='xs'>A sentence or two of what the notification is about (max 2 lines)</Text>
-                    </Box>
-
-                    <Icon name='trash' />
-                  </Box>
-                </Box>
+                />
               )
             }}
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={onRefresh}
+                colors={[palette.blue, palette.success, palette.error]}
+                tintColor={palette.primary}
+                title="Refreshing"
+                titleColor={palette.primary}
+              />
+            }
             showsVerticalScrollIndicator={false}
           // refreshControl={ }
           />
         </Box>
       </Box>
-    </Box>
+      <NotificationDetails
+        closeModal={toggleDetails}
+        showModal={showDetails}
+        title={activeIndex?.title}
+        body={activeIndex?.body}
+      />
+    </SafeAreaView>
   )
 };
+
+type NotificationItemProp = {
+  body: string;
+  title: string;
+  itemPress: () => void;
+};
+
+const NotificationFile = ({ body, title, itemPress }: NotificationItemProp) => {
+  return (
+    <Pressable
+      paddingVertical='ssm'
+      paddingHorizontal='sl'
+      backgroundColor='blueHighlight'
+      flexDirection='row'
+      borderRadius={8}
+      width={'100%'}
+      marginBottom='ssm'
+      alignItems='center'
+      style={{
+        shadowColor: 'rgba(0,0,0,0.2',
+        elevation: 4,
+        shadowOffset: {
+          width: 0,
+          height: 1
+        },
+        shadowOpacity: 0.22,
+        shadowRadius: 2.22
+      }}
+      onPress={itemPress}
+    >
+      <Box width={'18%'} height={54} borderRadius={8} backgroundColor='border' />
+
+      <Box flexDirection='row' alignItems='center' justifyContent='space-between' width={'85%'} paddingLeft='sml'>
+        <Box width={'90%'}>
+          <Text variant="medium12" >{title}</Text>
+          <Text variant="regular10" marginTop='xs'>{formatEllipseText(body, 40)}</Text>
+        </Box>
+
+        <Icon name='trash' />
+      </Box>
+    </Pressable>
+
+  )
+}
 
 export default Notifications;
 

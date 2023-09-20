@@ -1,10 +1,12 @@
 import { Image, ScrollView, StyleSheet, TouchableOpacity, } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Button, Icon, Pressable, Text } from '@/components/';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { palette } from '@/theme/';
 import { RootTabScreenProps } from '@/navigation/types';
-// import { eventBackground } from '@/assets/images';
+import { events, formatEllipseText } from '@/utils/';
+import database from '@react-native-firebase/database';
+import { TEvent } from '@/types/';
 
 const eventFilters = [
   { title: 'All events', id: 1 },
@@ -14,29 +16,38 @@ const eventFilters = [
   { title: 'Party', id: 5 },
 ];
 
-const events = [
-  { artist: 'Maroon 5', venue: 'Recife, Brazil', date: 'March 5', id: 1 },
-  { artist: 'Alicia Keys', venue: 'Olinda, Brazil', date: 'March 12', id: 2 },
-  { artist: 'Michael Jackson', venue: 'Sao Paolo, Brazil', date: 'March 15', id: 3 },
-]
-
-const eventBackground = require('@/assets/images/event_image.png')
+const eventBackground = require('@/assets/images/event_image.png');
 
 const Events = ({ navigation }: RootTabScreenProps<"EventsScreen">) => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [eventList, setEventList] = useState([]);
+
+  const dbReference = database();
 
   const handleFilterPress = (item: any) => {
     setActiveIndex(item.id);
   };
 
+  useEffect(() => {
+    const reference = dbReference
+      .ref(`/events`)
+      .on('value', snapshot => {
+        // console.log('Event data: ', snapshot.val());
+        setEventList(snapshot.val());
+      });
+
+    // Stop listening for updates when no longer required
+    return () => dbReference.ref('/events').off('child_added', reference);
+  }, []);
+
   return (
     <SafeAreaView style={styles.maincontainer} >
       <ScrollView
-        // horizontal
-        showsHorizontalScrollIndicator={false}
-        style={{ flex: 1, paddingHorizontal: 16 }}
+        showsVerticalScrollIndicator={false}
+        style={{ flex: 1, }}
+        contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 30 }}
       >
-        <Icon name='search' />
+        {/* <Icon name='search' /> */}
 
         <ScrollView
           horizontal
@@ -47,7 +58,6 @@ const Events = ({ navigation }: RootTabScreenProps<"EventsScreen">) => {
             const { id, title } = item;
             return (
               <Box
-                flexDirection='row'
                 backgroundColor={activeIndex === id ? "textBlue" : "blueHighlight"}
                 paddingVertical='sms'
                 paddingHorizontal='ssm'
@@ -63,7 +73,6 @@ const Events = ({ navigation }: RootTabScreenProps<"EventsScreen">) => {
           })}
         </ScrollView>
 
-
         <Box flexDirection='row' justifyContent='space-between' marginTop='xxl'>
           <Text variant='bold14'>Near you</Text>
           <Pressable onPress={() => { }} type='scale' >
@@ -71,18 +80,18 @@ const Events = ({ navigation }: RootTabScreenProps<"EventsScreen">) => {
           </Pressable>
         </Box>
 
-        <ScrollView horizontal style={{ flexDirection: 'row' }} showsHorizontalScrollIndicator={false}>
-          {events.map((item) => {
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          {events.map((item: TEvent) => {
             const { artist, date, id, venue } = item;
             return (
-              <Box marginTop='md' width={'70%'} id={`${id.toString()}${artist}`} marginRight='sm' >
-                <Image source={eventBackground} style={{ height: 120, width: '100%', borderTopLeftRadius: 16, borderTopRightRadius: 16, }} />
+              <Box marginTop='md' id={`${id.toString()}${artist}`} marginRight='sm' >
+                <Image source={eventBackground} style={{ height: 120, width: 280, borderTopLeftRadius: 16, borderTopRightRadius: 16, }} />
                 <Box position='absolute' right={10} top={10} paddingHorizontal="sml" paddingVertical='sms' backgroundColor='textBlue' borderRadius={12}>
                   <Text color='white' variant="medium10" textTransform='uppercase'>{date}</Text>
                 </Box>
                 <Box padding="md" backgroundColor='superlightgrey' borderBottomLeftRadius={16} borderBottomRightRadius={16}>
                   <Text variant="bold14" textTransform='capitalize'>{artist}</Text>
-                  <Text variant="regular12" textTransform='capitalize' marginTop='xs'>{venue}</Text>
+                  <Text variant="regular12" textTransform='capitalize' marginTop='xs'>{formatEllipseText(venue, 20)}</Text>
 
                   <Pressable
                     borderWidth={1}
@@ -93,7 +102,11 @@ const Events = ({ navigation }: RootTabScreenProps<"EventsScreen">) => {
                     alignItems='center'
                     justifyContent='center'
                     type='scale'
-                    onPress={() => navigation.navigate("SubscriptionScreen")}
+                    onPress={() => {
+                      setTimeout(() => {
+                        navigation.navigate("SubscriptionScreen", {eventItem: item})
+                      }, 300);
+                    }}
                   >
                     <Text variant="medium12" color='textBlue' >Buy tickets</Text>
                   </Pressable>
@@ -123,8 +136,8 @@ const Events = ({ navigation }: RootTabScreenProps<"EventsScreen">) => {
                   borderBottomRightRadius={16}
                 >
                   <Box justifyContent='center'>
-                    <Text variant="bold14" >{artist}</Text>
-                    <Text variant="regular12" color='secondary' marginTop='xs'>{venue}</Text>
+                    <Text variant="bold14" >{formatEllipseText(artist, 20)}</Text>
+                    <Text variant="regular12" color='secondary' marginTop='xs'>{formatEllipseText(venue, 20)}</Text>
                   </Box>
                   <Icon name='arrow_forward' size={12} />
                 </Box>
@@ -139,18 +152,18 @@ const Events = ({ navigation }: RootTabScreenProps<"EventsScreen">) => {
           </Pressable>
         </Box>
 
-        <ScrollView horizontal style={{ flexDirection: 'row' }} showsHorizontalScrollIndicator={false}>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           {events.map((item) => {
             const { artist, date, id, venue } = item;
             return (
-              <Box marginTop='md' width={'70%'} id={`${id.toString()}${artist}`} marginRight='sm' >
-                <Image source={eventBackground} style={{ height: 120, width: '100%', borderTopLeftRadius: 16, borderTopRightRadius: 16, }} />
+              <Box marginTop='md' id={`${id.toString()}${artist}`} marginRight='sm' >
+                <Image source={eventBackground} style={{ height: 120, width: 280, borderTopLeftRadius: 16, borderTopRightRadius: 16, }} />
                 <Box position='absolute' right={10} top={10} paddingHorizontal="sml" paddingVertical='sms' backgroundColor='textBlue' borderRadius={12}>
                   <Text color='white' variant="medium10" textTransform='uppercase'>{date}</Text>
                 </Box>
                 <Box padding="md" backgroundColor='superlightgrey' borderBottomLeftRadius={16} borderBottomRightRadius={16}>
                   <Text variant="bold14" textTransform='capitalize'>{artist}</Text>
-                  <Text variant="regular12" textTransform='capitalize' marginTop='xs'>{venue}</Text>
+                  <Text variant="regular12" textTransform='capitalize' marginTop='xs'>{formatEllipseText(venue, 20)}</Text>
 
                   <Pressable
                     borderWidth={1}
@@ -161,6 +174,11 @@ const Events = ({ navigation }: RootTabScreenProps<"EventsScreen">) => {
                     alignItems='center'
                     justifyContent='center'
                     type='scale'
+                    onPress={() => {
+                      setTimeout(() => {
+                        navigation.navigate("SubscriptionScreen", {eventItem: item})
+                      }, 300);
+                    }}
                   >
                     <Text variant="medium12" color='textBlue' >Buy tickets</Text>
                   </Pressable>
@@ -169,9 +187,6 @@ const Events = ({ navigation }: RootTabScreenProps<"EventsScreen">) => {
             )
           })}
         </ScrollView>
-
-
-
       </ScrollView>
     </SafeAreaView>
   )

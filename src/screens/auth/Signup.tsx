@@ -21,26 +21,30 @@ const Signup = ({ navigation }: RootStackScreenProps<"SignupScreen">) => {
 
   const dbReference = database();
 
-  const addToDb = (data: { email: string, name: string, password: string }, userDetails: FirebaseAuthTypes.User) => {
+  const addToDb = (
+    data: { email: string, firstname: string, lastname: string, password: string },
+    userDetails: FirebaseAuthTypes.User
+  ) => {
     const userUid = userDetails?.uid;
     //set to null to delete data or .remove()
     dbReference.ref(`/User/${userUid}`).set({
-      name: data.name,
+      balance: 5000,
+      firstName: data.firstname,
+      lastName: data.lastname,
       userEmail: data.email,
       userUid: userUid
-    })
-    .then(() => console.log('User has been added to db.'));
+    }).then(() => console.log('User has been added to db.'));
   };
 
-  const firbaseSignup = (data: { email: string, name: string, password: string }) => {
+  const firbaseSignup = (data: { email: string, firstname: string, lastname: string, password: string, }) => {
     setIsLoading(true);
     auth()
       .createUserWithEmailAndPassword(data.email, data.password)
       .then((user) => {
         user.user.sendEmailVerification();
         user.user?.updateProfile({
-          displayName: data.name
-        })
+          displayName: `${data.firstname} ${data.lastname}`
+        });
         addToDb(data, user?.user);
         goToLogin();
 
@@ -89,7 +93,8 @@ const Signup = ({ navigation }: RootStackScreenProps<"SignupScreen">) => {
     defaultValues: {
       email: "",
       password: "",
-      name: ""
+      firstname: "",
+      lastname: "",
     },
   });
 
@@ -98,25 +103,48 @@ const Signup = ({ navigation }: RootStackScreenProps<"SignupScreen">) => {
       <Box paddingHorizontal="md" justifyContent="center" flex={1}>
         <Text variant='bold24'>Create an account</Text>
 
-        <Box marginTop="lg" >
-          <PrimaryInput
-            placeholder='Enter your name'
-            control={control}
-            name="name"
-            label='Name'
-            rules={{
-              required: "Name is required",
-              maxLength: {
-                value: 100,
-                message: "Maximum of 100 characters",
-              },
-              pattern: {
-                value: /^[a-zA-Z ]*$/,
-                message: "Please enter a valid name",
-              },
-            }}
-            errorMessage={errors.name?.message}
-          />
+        <Box marginTop="lg" flexDirection='row' justifyContent="space-between">
+          <Box width={"48%"}>
+            <PrimaryInput
+              placeholder='Enter first name'
+              control={control}
+              name="firstname"
+              label='First name'
+              rules={{
+                required: "Name is required",
+                maxLength: {
+                  value: 100,
+                  message: "Maximum of 100 characters",
+                },
+                pattern: {
+                  value: /^[a-zA-Z ]*$/,
+                  message: "Please enter a valid name",
+                },
+              }}
+              errorMessage={errors.firstname?.message}
+            />
+          </Box>
+
+          <Box width={"48%"}>
+            <PrimaryInput
+              placeholder='Enter last name'
+              control={control}
+              name="lastname"
+              label='Last name'
+              rules={{
+                required: "Name is required",
+                maxLength: {
+                  value: 100,
+                  message: "Maximum of 100 characters",
+                },
+                pattern: {
+                  value: /^[a-zA-Z ]*$/,
+                  message: "Please enter a valid name",
+                },
+              }}
+              errorMessage={errors.lastname?.message}
+            />
+          </Box>
         </Box>
 
         <Box marginTop="md" >
@@ -158,7 +186,7 @@ const Signup = ({ navigation }: RootStackScreenProps<"SignupScreen">) => {
               },
               pattern: {
                 value: /^[a-zA-Z ]*$/,
-                message: "Please enter a valid password",
+                message: "Password must be alphabets only",
               },
             }}
             secureTextEntry

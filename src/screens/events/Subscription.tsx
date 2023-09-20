@@ -11,7 +11,9 @@ const ticketPrices = [
   { title: 'Regular', price: '15,000', info: 'Regular ticket', id: 3 },
 ]
 
-const Subscription = ({ navigation }: RootStackScreenProps<"SubscriptionScreen">) => {
+const Subscription = ({ navigation, route }: RootStackScreenProps<"SubscriptionScreen">) => {
+  const event = route.params?.eventItem;
+
   const [activeIndex, setActiveIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -31,19 +33,22 @@ const Subscription = ({ navigation }: RootStackScreenProps<"SubscriptionScreen">
   });
 
   const handleBuyTicket = (data: { unit: string }) => {
-    setIsLoading(true);
-    setTimeout(() => {
-      console.log(data);
-      setIsLoading(false);
-
-    }, 1000);
+    if (activeIndex === 0) {
+      console.log("Please select  your tickect preference and try again")
+    } else {
+      setIsLoading(true);
+      setTimeout(() => {
+        console.log(data);
+        setIsLoading(false);
+      }, 1000);
+    }
   };
 
   return (
     <SafeAreaView style={styles.maincontainer}>
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 30 }} style={{ flex: 1 }}>
         <Box paddingHorizontal="md">
-          <Box flexDirection='row' alignItems="center" marginTop="md">
+          <Box flexDirection='row' alignItems="center" >
             <Pressable onPress={() => navigation.goBack()} type='scale'>
               <Icon name='arrow_back' size={16} />
             </Pressable>
@@ -112,18 +117,23 @@ const Subscription = ({ navigation }: RootStackScreenProps<"SubscriptionScreen">
             <Box padding='lg' borderRadius={16} marginTop='xl' backgroundColor='blueHighlight'>
               <Text variant="bold16" >You'll get:</Text>
 
-              <Box flexDirection='row' alignItems='center' marginTop='md' >
-                <Box backgroundColor='black' height={8} width={8} borderRadius={4} />
-                <Text variant="regular12" marginLeft='sml' color='secondary'>Unlimited access</Text>
-              </Box>
-              <Box flexDirection='row' alignItems='center' marginTop='md'>
-                <Box backgroundColor='black' height={8} width={8} borderRadius={4} />
-                <Text variant="regular12" marginLeft='sml' color='secondary'>200GB storage</Text>
-              </Box>
-              <Box flexDirection='row' alignItems='center' marginTop='md'>
-                <Box backgroundColor='black' height={8} width={8} borderRadius={4} />
-                <Text variant="regular12" marginLeft='sml' color='secondary'>Sync all your devices</Text>
-              </Box>
+              <TicketDetails title={`Unlimited access to ${event?.artist}`} />
+              
+              {activeIndex === 1 &&
+                <TicketDetails title='Access for up to ten (10) guest' />
+              }
+              {activeIndex === 1 &&
+                <TicketDetails title='Access for backstage with performers' />
+              }
+              {activeIndex === 1 &&
+                <TicketDetails title='Access for VVIP section' />
+              }
+              {activeIndex === 2 &&
+                <TicketDetails title='Access for VIP section' />
+              }
+              {activeIndex === 2 &&
+                <TicketDetails title='Access for VIP parking area' />
+              }
             </Box>
 
             <Button
@@ -138,6 +148,19 @@ const Subscription = ({ navigation }: RootStackScreenProps<"SubscriptionScreen">
         </Box>
       </ScrollView>
     </SafeAreaView>
+  )
+};
+
+type TicketProps = {
+  title: string;
+};
+
+const TicketDetails = ({ title }: TicketProps) => {
+  return (
+    <Box flexDirection='row' alignItems='center' marginTop='md'>
+      <Box backgroundColor='black' height={8} width={8} borderRadius={4} />
+      <Text variant="regular12" marginLeft='sml' color='secondary'>{title}</Text>
+    </Box>
   )
 };
 

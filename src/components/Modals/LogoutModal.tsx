@@ -3,7 +3,7 @@ import React from 'react';
 import CenterModal from '../CenterModal';
 import Box from '../Box';
 import Text from '../Text';
-import { palette } from '@/theme';
+import { palette } from '@/theme/';
 
 type LogoutModalProps = {
   closeModal: () => void;
