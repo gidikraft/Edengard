@@ -57,7 +57,7 @@ const AccountDetails = ({ navigation }: RootStackScreenProps<"AccountDetails">) 
               message: "Please enter a valid name",
             },
           }}
-          inputStyle={{ backgroundColor: palette.white, borderColor: palette.white }}
+          // inputStyle={{ backgroundColor: palette.white, borderColor: palette.white }}
           inputContainerStyle={{ marginTop: 24, }}
           errorMessage={errors.firstName?.message}
         />
@@ -81,7 +81,7 @@ const AccountDetails = ({ navigation }: RootStackScreenProps<"AccountDetails">) 
               message: "Please enter a valid name",
             },
           }}
-          inputStyle={{ backgroundColor: palette.white, borderColor: palette.white }}
+          // inputStyle={{ backgroundColor: palette.white, borderColor: palette.white }}
           inputContainerStyle={{ marginTop: 24, }}
           errorMessage={errors.firstName?.message}
         />
@@ -97,7 +97,7 @@ const AccountDetails = ({ navigation }: RootStackScreenProps<"AccountDetails">) 
               message: "Please enter a valid phone number",
             },
           }}
-          inputStyle={{ backgroundColor: palette.white, borderColor: palette.white }}
+          // inputStyle={{ backgroundColor: palette.white, borderColor: palette.white }}
           inputContainerStyle={{ marginTop: 24, }}
           errorMessage={errors.firstName?.message}
         />

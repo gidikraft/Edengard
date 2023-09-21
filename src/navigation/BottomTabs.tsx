@@ -4,7 +4,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import colors from "../theme/colors";
 import { RootTabParamList, RootTabScreenProps } from "./types";
 import { ProfileScreen } from "@/screens/profile";
-import { palette } from "@/theme";
+import { palette } from "@/theme/";
 import { EventsScreen, HomeScreen } from "@/screens/Home";
 
 /**
@@ -57,7 +57,7 @@ function BottomTabNavigator() {
 			/>
 
 			<BottomTab.Screen
-				name="ProfileSCreen"
+				name="ProfileScreen"
 				component={ProfileScreen}
 				options={{
 					headerShown: false,

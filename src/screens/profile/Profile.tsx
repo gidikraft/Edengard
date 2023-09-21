@@ -10,7 +10,7 @@ import { RootTabScreenProps } from '@/navigation/types';
 import { useToast } from '@/hooks/useToast';
 import IIcon from 'react-native-vector-icons/Ionicons';
 
-const Profile = ({ navigation }: RootTabScreenProps<"ProfileSCreen">) => {
+const Profile = ({ navigation }: RootTabScreenProps<"ProfileScreen">) => {
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const firebaseAuth = auth();
   const toast = useToast();

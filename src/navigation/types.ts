@@ -5,7 +5,7 @@ import { TEvent } from "@/types/";
 
 declare global {
   namespace ReactNavigation {
-    interface RootParamList extends RootStackParamList {}
+    interface RootParamList extends RootStackParamList { }
   }
 }
 
@@ -23,14 +23,14 @@ export type RootStackParamList = {
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
   NativeStackScreenProps<RootStackParamList, Screen>;
 
-  export type RootTabParamList = {
-    HomeScreen: undefined;
-    EventsScreen: undefined;
-    ProfileSCreen: undefined;
-    TransferLanding: undefined;
+export type RootTabParamList = {
+  HomeScreen: undefined;
+  EventsScreen: undefined;
+  ProfileScreen: undefined;
+  TransferLanding: undefined;
 };
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> = CompositeScreenProps<
-    BottomTabScreenProps<RootTabParamList, Screen>,
-    NativeStackScreenProps<RootStackParamList>
+  BottomTabScreenProps<RootTabParamList, Screen>,
+  NativeStackScreenProps<RootStackParamList>
 >;

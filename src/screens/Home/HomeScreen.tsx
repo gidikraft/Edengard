@@ -27,7 +27,7 @@ const HomeScreen = ({ navigation }: RootTabScreenProps<"HomeScreen">) => {
   const firebaseAuth = auth();
   const dispatch = useAppDispatch();
   const userUid = firebaseAuth?.currentUser?.uid;
-  console.log(userData, 'firebaseAuth?.currentUser');
+  // console.log(userData, firebaseAuth?.currentUser?.getIdToken(), 'firebaseAuth?.currentUser');
 
   const updateDb = () => {
     dbReference.ref(`/User/${userUid}`).update({
@@ -50,7 +50,7 @@ const HomeScreen = ({ navigation }: RootTabScreenProps<"HomeScreen">) => {
     const reference = dbReference
       .ref(`/User/${userUid}`)
       .on('value', snapshot => {
-        console.log('User data: ', snapshot.val());
+        // console.log('User data: ', snapshot.val());
         dispatch(setUser(snapshot.val()));
       });
 

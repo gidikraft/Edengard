@@ -7,12 +7,14 @@ import arrow_back from "../assets/svg/arrow_back_ios.svg";
 import arrowForward from "../assets/svg/arrow_forward.svg";
 import bell from "../assets/svg/bell.svg";
 import events from "../assets/svg/events.svg";
+import google from "@/assets/svg/google.svg";
 import health from "@/assets/svg/health.svg";
 import home from "@/assets/svg/home_tab.svg";
 import homeInactive from "@/assets/svg/home_tab_inactive.svg";
 import incoming from "@/assets/svg/incoming.svg";
 import link from "@/assets/svg/up_claret.svg";
 import news from "@/assets/svg/news.svg";
+import phone from "@/assets/svg/phone.svg";
 import profilePic from "@/assets/svg/profile_pic.svg";
 import profilePhoto from "@/assets/svg/profile-photo.svg";
 import search from "@/assets/svg/search.svg";
@@ -34,12 +36,14 @@ export const ICONS = {
     "arrow_forward": arrowForward,
     bell,
     events,
+    google,
     health,
     home,
     "home-inactive": homeInactive,
     incoming,
     link,
     news,
+    phone,
     "profile_pic": profilePic,
     "profile-photo": profilePhoto,
     search,

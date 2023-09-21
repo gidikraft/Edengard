@@ -8,7 +8,13 @@ import auth from '@react-native-firebase/auth';
 import { RootStackScreenProps } from '@/navigation/types';
 import { useAppDispatch } from '@/hooks/';
 import { getFromLS, saveToLS } from '@/services/localStorage/storage';
-// import Icon from 'react-native-vector-icons/Ionicons';
+import { palette } from '@/theme/';
+import {
+  GoogleSignin,
+  // GoogleSigninButton,
+  // statusCodes,
+} from '@react-native-google-signin/google-signin';
+import { useToast } from '@/hooks/useToast';
 
 
 const Login = ({ navigation }: RootStackScreenProps<"LoginScreen">) => {
@@ -17,6 +23,11 @@ const Login = ({ navigation }: RootStackScreenProps<"LoginScreen">) => {
   const firebaseAuth = auth();
   const dispatch = useAppDispatch();
   // const { t } = useTranslation();
+  const toast = useToast();
+  // GoogleSignin.configure({
+  //   webClientId: '"client_type": 3',
+  // });
+
 
   const firbaseSignIn = (data: { email: string, password: string }) => {
     setIsLoading(true);
@@ -66,6 +77,21 @@ const Login = ({ navigation }: RootStackScreenProps<"LoginScreen">) => {
       })
   };
 
+  const onGoogleButtonPress = async () => {
+    toast.info({message: 'Coming soon'});
+    // // Check if your device supports Google Play
+    // await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+    // // Get the users ID token
+    // const { idToken, user } = await GoogleSignin.signIn();
+
+    // // Create a Google credential with the token
+    // const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+    // console.log(idToken, googleCredential, user, 'googleCredential');
+
+    // // Sign-in the user with the credential
+    // return firebaseAuth.signInWithCredential(googleCredential);
+  };
+
   const goToSignup = () => {
     navigation.navigate("SignupScreen");
   };
@@ -105,53 +131,52 @@ const Login = ({ navigation }: RootStackScreenProps<"LoginScreen">) => {
       <Box flex={1} justifyContent="center" >
         <Text variant="bold24" color='textColor' marginVertical='sm'>Welcome back</Text>
 
-        <Box marginTop="lg" >
-          <PrimaryInput
-            placeholder='Enter your email'
-            control={control}
-            name="email"
-            label='Email'
-            rules={{
-              required: "Email is required",
-              maxLength: {
-                value: 100,
-                message: "Maximum of 100 characters",
-              },
-              pattern: {
-                value: /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                message: "Please enter a valid email",
-              },
-            }}
-            keyboardType="email-address"
-            errorMessage={errors.email?.message}
-          />
-        </Box>
+        <PrimaryInput
+          placeholder='Enter your email'
+          control={control}
+          name="email"
+          label='Email'
+          rules={{
+            required: "Email is required",
+            maxLength: {
+              value: 100,
+              message: "Maximum of 100 characters",
+            },
+            pattern: {
+              value: /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+              message: "Please enter a valid email",
+            },
+          }}
+          keyboardType="email-address"
+          errorMessage={errors.email?.message}
+          inputContainerStyle={{ marginTop: 24, }}
+        />
 
-        <Box marginTop="md" >
-          <PrimaryInput
-            placeholder='Enter password'
-            control={control}
-            name="password"
-            label='Password'
-            rules={{
-              required: "Password is required",
-              maxLength: {
-                value: 32,
-                message: "Maximum of 32 characters",
-              },
-              minLength: {
-                value: 6,
-                message: 'Password must be 6 or more',
-              },
-              pattern: {
-                value: /^[a-zA-Z0-9]*$/,
-                message: "Please enter a valid password",
-              },
-            }}
-            secureTextEntry
-            errorMessage={errors.password?.message}
-          />
-        </Box>
+        <PrimaryInput
+          placeholder='Enter password'
+          control={control}
+          name="password"
+          label='Password'
+          rules={{
+            required: "Password is required",
+            maxLength: {
+              value: 32,
+              message: "Maximum of 32 characters",
+            },
+            minLength: {
+              value: 6,
+              message: 'Password must be 6 or more',
+            },
+            pattern: {
+              value: /^[a-zA-Z0-9]*$/,
+              message: "Please enter a valid password",
+            },
+          }}
+          secureTextEntry
+          errorMessage={errors.password?.message}
+          inputContainerStyle={{ marginTop: 24, }}
+        />
+
         <Pressable marginTop='md' onPress={goToResetPassword} type='scale'>
           <Text textAlign='right' color='textBlue'>Forgot password?</Text>
         </Pressable>
@@ -162,11 +187,41 @@ const Login = ({ navigation }: RootStackScreenProps<"LoginScreen">) => {
           backgroundColor="contactColor"
           labelProps={{ color: 'white' }}
           variant='textColor'
-          marginTop='xl'
+          marginTop='lg'
           isloading={isLoading}
         />
 
-        <Box flexDirection='row' justifyContent='center' marginTop='sm'>
+        <Box flexDirection='row' marginTop='md' justifyContent='space-between' alignItems='center'>
+          <Box height={1} backgroundColor="border" width={'33%'} />
+          <Text variant="medium14" textAlign="center" color="secondary">or login with</Text>
+          <Box height={1} backgroundColor="border" width={'33%'} />
+        </Box>
+
+        <Button
+          label='Google'
+          onPress={() => onGoogleButtonPress().then(() => console.log('Signed in with google'))}
+          backgroundColor="white"
+          variant='textColor'
+          borderWidth={1}
+          borderColor="border"
+          marginTop='md'
+          icon='google'
+          isloading={isLoading}
+        />
+
+        <Button
+          label='Phone number'
+          onPress={() => onGoogleButtonPress().then(() => console.log('Signed in with google'))}
+          backgroundColor="white"
+          variant='textColor'
+          borderWidth={1}
+          borderColor="border"
+          marginTop='md'
+          icon='phone'
+          isloading={isLoading}
+        />
+
+        <Box flexDirection='row' justifyContent='center' marginTop='sl'>
           <Text >Don't have an account?</Text>
           <Pressable type='scale' onPress={goToSignup} >
             <Text marginLeft='xs' color='textBlue'>Sign up</Text>

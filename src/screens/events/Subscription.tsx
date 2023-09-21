@@ -4,6 +4,7 @@ import { palette } from '@/theme/';
 import { Box, Button, Icon, Pressable, PrimaryInput, Text } from '@/components/';
 import { RootStackScreenProps } from '@/navigation/types';
 import { useForm } from 'react-hook-form';
+import IIcon from 'react-native-vector-icons/Ionicons';
 
 const ticketPrices = [
   { title: 'Gold', price: '500,000', info: 'Table of ten', id: 1 },
@@ -50,9 +51,9 @@ const Subscription = ({ navigation, route }: RootStackScreenProps<"SubscriptionS
         <Box paddingHorizontal="md">
           <Box flexDirection='row' alignItems="center" >
             <Pressable onPress={() => navigation.goBack()} type='scale'>
-              <Icon name='arrow_back' size={16} />
+              <IIcon name="chevron-back-outline" size={16} color={palette.black} />
             </Pressable>
-            <Text variant="medium24" marginLeft='md'>Tickets</Text>
+            <Text variant="medium20" marginLeft='md'>Tickets</Text>
           </Box>
 
           <Box marginTop='lg' >
@@ -139,7 +140,9 @@ const Subscription = ({ navigation, route }: RootStackScreenProps<"SubscriptionS
             <Button
               label='Buy'
               onPress={handleSubmit(handleBuyTicket)}
-              backgroundColor="primary"
+              backgroundColor="contactColor"
+              labelProps={{ color: 'white' }}
+              borderRadius={16}
               variant='textColor'
               marginTop='xl'
               isloading={isLoading}
